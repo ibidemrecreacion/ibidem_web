@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ibidem: Recreación Histórica | Vivere Romanum</title>
-    <!-- Carga de Tailwind CSS para un diseño responsive y moderno -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Carga de fuentes corporativas: Cinzel para un toque monumental y Merriweather para legibilidad -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Carga de Tailwind CSS para un diseño responsive y moderno --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de fuentes corporativas: Cinzel para un toque monumental y Merriweather para legibilidad --><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
         /* Definición de la paleta de colores corporativos según el manual */
@@ -72,46 +70,35 @@
 
 <body id="top" class="min-h-screen antialiased bg-[var(--color-pergamino)] text-[var(--color-pizarra)]">
 
-    <!-- 1. Cabecera (Header) - Crema Pergamino con sutil sombra restaurada -->
-    <header class="bg-[var(--color-pergamino)] py-4 sticky top-0 z-50 shadow-md border-b border-gray-300">
+    <!-- 1. Cabecera (Header) - Crema Pergamino con sutil sombra --><header class="bg-[var(--color-pergamino)] py-4 sticky top-0 z-50 shadow-md border-b border-gray-300">
         <div class="container mx-auto px-4 flex justify-between items-center">
             
-            <!-- Logo y Título (LOGOTIPO REEMPLAZADO POR UN MARCADOR DE POSICIÓN ESTABLE Y EN COLOR CORPORATIVO) -->
-            <a href="#top" class="flex items-center space-x-3 group" title="Ir a Inicio">
-                <!-- Placeholder estable: 40x40, Rojo Pompeyano (9A2A2A) de fondo, texto Crema Pergamino (F5EFE3) -->
-                <img id="main-logo" 
+            <!-- Logo y Título --><a href="#top" class="flex items-center space-x-3 group" title="Ir a Inicio">
+                <!-- Placeholder estable: 40x40, Rojo Pompeyano (9A2A2A) de fondo, texto Crema Pergamino (F5EFE3) --><img id="main-logo" 
                      src="https://placehold.co/40x40/9A2A2A/F5EFE3?text=I" 
                      alt="Logotipo Ibidem Recreación Histórica" 
                      class="w-10 h-10 transition-transform duration-300 group-hover:scale-105 rounded-full border border-[var(--color-pompeyano)]">
                 <h1 class="text-2xl font-bold header-font text-[var(--color-pompeyano)] tracking-wider">Ibidem</h1>
             </a>
             
-            <!-- Contenedor para Redes y Navegación (Escritorio) -->
-            <div class="flex items-center space-x-6">
+            <!-- Contenedor para Redes y Navegación (Escritorio) --><div class="flex items-center space-x-6">
                 
-                <!-- 1. Redes Sociales (SOLO ESCRITORIO) - Color base: Rojo Pompeyano. Hover: Ocre Dorado -->
-                <div class="hidden md:flex space-x-4">
-                    <!-- Facebook con Hipervínculo -->
-                    <a href="https://www.facebook.com/ibidem.ibidem/" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Facebook" title="Facebook de Ibidem" 
+                <!-- 1. Redes Sociales (SOLO ESCRITORIO) - Color base: Rojo Pompeyano. Hover: Ocre Dorado --><div class="hidden md:flex space-x-4">
+                    <!-- Facebook con Hipervínculo --><a href="https://www.facebook.com/ibidem.ibidem/" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Facebook" title="Facebook de Ibidem" 
                        class="text-[var(--color-pompeyano)] hover:text-[var(--color-dorado)] transition-colors">
-                        <!-- fill-current usa el color definido en el a tag -->
                         <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.145 3.753 9.418 8.618 10.158V14.61h-2.28v-2.61h2.28v-2c0-2.25 1.344-3.483 3.393-3.483 1.018 0 1.905.076 2.16.108v2.49h-1.478c-1.16 0-1.385.552-1.385 1.36v1.785h2.766l-.447 2.61h-2.319V22.158C18.247 21.418 22 17.145 22 12c0-5.523-4.477-10-10-10z"/></svg>
                     </a>
-                    <!-- Instagram con Hipervínculo -->
-                    <a href="https://www.instagram.com/ibidemrecreacion/" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Instagram" title="Instagram de Ibidem"
+                    <!-- Instagram con Hipervínculo --><a href="https://www.instagram.com/ibidemrecreacion/" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Instagram" title="Instagram de Ibidem"
                        class="text-[var(--color-pompeyano)] hover:text-[var(--color-dorado)] transition-colors">
-                        <!-- fill-current usa el color definido en el a tag -->
                         <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.5" y1="6.5" y2="6.5"/></svg>
                     </a>
                 </div>
             
-                <!-- 2. Botón de Menú (Para móviles) -->
-                <button id="menu-toggle" class="md:hidden p-2 rounded-lg text-[var(--color-pompeyano)] hover:bg-[var(--color-pompeyano)]/10 transition-colors">
+                <!-- 2. Botón de Menú (Para móviles) --><button id="menu-toggle" class="md:hidden p-2 rounded-lg text-[var(--color-pompeyano)] hover:bg-[var(--color-pompeyano)]/10 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
                 </button>
 
-                <!-- 3. Navegación Principal (Escritorio) -->
-                <nav id="main-nav" class="hidden md:flex space-x-6 header-font text-[var(--color-pizarra)]">
+                <!-- 3. Navegación Principal (Escritorio) --><nav id="main-nav" class="hidden md:flex space-x-6 header-font text-[var(--color-pizarra)]">
                     <a href="#top" class="nav-link">Inicio</a>
                     <a href="#proyectos" class="nav-link">Proyectos</a>
                     <a href="#equipo" class="nav-link">Equipo</a>
@@ -120,11 +107,9 @@
             </div>
         </div>
 
-        <!-- Menú Móvil (inicialmente oculto) -->
-        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 border-t border-gray-300">
+        <!-- Menú Móvil (inicialmente oculto) --><div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 border-t border-gray-300">
             <nav class="flex flex-col space-y-2 header-font text-[var(--color-pizarra)]">
-                <!-- Redes Sociales en Móvil - Color base: Rojo Pompeyano. Hover: Ocre Dorado -->
-                <div class="flex justify-center space-x-6 py-2 border-b border-gray-200">
+                <!-- Redes Sociales en Móvil - Color base: Rojo Pompeyano. Hover: Ocre Dorado --><div class="flex justify-center space-x-6 py-2 border-b border-gray-200">
                     <a href="https://www.facebook.com/ibidem.ibidem/" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Facebook"
                        class="text-[var(--color-pompeyano)] hover:text-[var(--color-dorado)] transition-colors">
                         <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.145 3.753 9.418 8.618 10.158V14.61h-2.28v-2.61h2.28v-2c0-2.25 1.344-3.483 3.393-3.483 1.018 0 1.905.076 2.16.108v2.49h-1.478c-1.16 0-1.385.552-1.385 1.36v1.785h2.766l-.447 2.61h-2.319V22.158C18.247 21.418 22 17.145 22 12c0-5.523-4.477-10-10-10z"/></svg>
@@ -134,8 +119,7 @@
                         <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.5" y1="6.5" y2="6.5"/></svg>
                     </a>
                 </div>
-                <!-- Enlaces de navegación -->
-                <a href="#top" class="nav-link block">Inicio</a>
+                <!-- Enlaces de navegación --><a href="#top" class="nav-link block">Inicio</a>
                 <a href="#proyectos" class="nav-link block">Proyectos</a>
                 <a href="#equipo" class="nav-link block">Equipo</a>
                 <a href="#contacto" class="nav-link block cta-button text-center">Contacto</a>
@@ -143,11 +127,9 @@
         </div>
     </header>
 
-    <!-- 2. Contenido Principal (Main) -->
-    <main class="container mx-auto px-4 py-12">
+    <!-- 2. Contenido Principal (Main) --><main class="container mx-auto px-4 py-12">
         
-        <!-- Sección Hero (Vivere Romanum) -->
-        <section class="text-center mb-16 pt-12">
+        <!-- Sección Hero (Vivere Romanum) --><section class="text-center mb-16 pt-12">
             <h2 class="text-6xl md:text-8xl font-bold header-font text-[var(--color-pompeyano)] leading-none mb-4">Vivere Romanum</h2>
             <p class="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto mb-8 italic">
                 La historia no es solo lo que fue, sino cómo se vivía. Revivimos la vida civil y el rigor histórico de la antigüedad.
@@ -158,33 +140,26 @@
             <div class="decorative-line"></div>
         </section>
 
-        <!-- Sección de Propósito (Pilares) -->
-        <section id="proyectos" class="grid md:grid-cols-3 gap-8 py-12">
+        <!-- Sección de Propósito (Pilares) --><section id="proyectos" class="grid md:grid-cols-3 gap-8 py-12">
             
-            <!-- Pilar 1: Rigor Histórico -->
-            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-[var(--color-pompeyano)]">
-                <!-- Icono representativo (ejemplo: Columna) -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-4 text-[var(--color-pompeyano)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Pilar 1: Rigor Histórico --><div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-[var(--color-pompeyano)]">
+                <!-- Icono representativo (ejemplo: Columna) --><svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-4 text-[var(--color-pompeyano)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="4" y="2" width="16" height="4" rx="1"/><path d="M12 6v16"/><path d="M3 22h18"/><path d="M12 6V2"/><rect x="4" y="18" width="16" height="4" rx="1"/>
                 </svg>
                 <h3 class="text-xl font-bold header-font mb-3">Rigor Histórico</h3>
                 <p class="text-sm text-gray-600">Investigación exhaustiva para asegurar la máxima fidelidad en cada detalle de la recreación.</p>
             </div>
 
-            <!-- Pilar 2: Gesto Humano -->
-            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-[var(--color-dorado)]">
-                <!-- Icono representativo (ejemplo: Escritura / Pluma) -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-4 text-[var(--color-dorado)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Pilar 2: Gesto Humano --><div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-[var(--color-dorado)]">
+                <!-- Icono representativo (ejemplo: Escritura / Pluma) --><svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-4 text-[var(--color-dorado)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
                 </svg>
                 <h3 class="text-xl font-bold header-font mb-3">Gesto Humano</h3>
                 <p class="text-sm text-gray-600">Ponemos énfasis en la vida cotidiana, la artesanía y la experiencia civil del pasado.</p>
             </div>
 
-            <!-- Pilar 3: Pasión Compartida -->
-            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-[var(--color-pompeyano)]">
-                <!-- Icono representativo (ejemplo: Comunidad / Grupo) -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-4 text-[var(--color-pompeyano)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Pilar 3: Pasión Compartida --><div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-[var(--color-pompeyano)]">
+                <!-- Icono representativo (ejemplo: Comunidad / Grupo) --><svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-4 text-[var(--color-pompeyano)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17 19l-5-5-5 5"/><path d="M12 14v10"/><path d="M12 4a4 4 0 0 0-4 4v2"/><path d="M12 4a4 4 0 0 1 4 4v2"/><path d="M16 10H8"/>
                 </svg>
                 <h3 class="text-xl font-bold header-font mb-3">Pasión Compartida</h3>
@@ -193,30 +168,25 @@
 
         </section>
 
-        <!-- Sección de Equipo (Mockup) -->
-        <section id="equipo" class="py-12 mt-12 border-t border-gray-300">
+        <!-- Sección de Equipo (Mockup) --><section id="equipo" class="py-12 mt-12 border-t border-gray-300">
             <h2 class="text-4xl font-bold header-font text-[var(--color-pompeyano)] text-center mb-8">Nuestro Equipo Académico</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-                <!-- Mockup de miembro 1 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
+                <!-- Mockup de miembro 1 --><div class="bg-white p-6 rounded-lg shadow-lg">
                     <img src="https://placehold.co/150x150/9A2A2A/F5EFE3?text=A.D." alt="Foto de Perfil" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-[var(--color-dorado)]">
                     <h4 class="font-bold header-font text-lg">A. Decimus</h4>
                     <p class="text-sm text-gray-600 italic">Especialista en Historia Civil Romana</p>
                 </div>
-                <!-- Mockup de miembro 2 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
+                <!-- Mockup de miembro 2 --><div class="bg-white p-6 rounded-lg shadow-lg">
                     <img src="https://placehold.co/150x150/333333/F5EFE3?text=L.C." alt="Foto de Perfil" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-[var(--color-dorado)]">
                     <h4 class="font-bold header-font text-lg">L. Cornelius</h4>
                     <p class="text-sm text-gray-600 italic">Experto en Vida Cotiadiana y Artesanía</p>
                 </div>
-                <!-- Mockup de miembro 3 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
+                <!-- Mockup de miembro 3 --><div class="bg-white p-6 rounded-lg shadow-lg">
                     <img src="https://placehold.co/150x150/9A2A2A/F5EFE3?text=P.M." alt="Foto de Perfil" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-[var(--color-dorado)]">
                     <h4 class="font-bold header-font text-lg">P. Maximus</h4>
                     <p class="text-sm text-gray-600 italic">Asesor de Vestimenta y Textiles</p>
                 </div>
-                <!-- Mockup de miembro 4 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
+                <!-- Mockup de miembro 4 --><div class="bg-white p-6 rounded-lg shadow-lg">
                     <img src="https://placehold.co/150x150/333333/F5EFE3?text=V.S." alt="Foto de Perfil" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-[var(--color-dorado)]">
                     <h4 class="font-bold header-font text-lg">V. Silvana</h4>
                     <p class="text-sm text-gray-600 italic">Diseñadora de Exposiciones Digitales</p>
@@ -226,10 +196,8 @@
 
     </main>
 
-    <!-- 3. Pie de Página (Footer) -->
-    <footer class="bg-gray-200/50 py-8 mt-12 border-t border-gray-300">
-        <!-- Detalle decorativo inspirado en mosaicos (Greca simple) -->
-        <div class="h-1 bg-[var(--color-dorado)] mb-4 shadow-inner"></div> 
+    <!-- 3. Pie de Página (Footer) --><footer class="bg-gray-200/50 py-8 mt-12 border-t border-gray-300">
+        <!-- Detalle decorativo inspirado en mosaicos (Greca simple) --><div class="h-1 bg-[var(--color-dorado)] mb-4 shadow-inner"></div> 
 
         <div class="container mx-auto px-4 text-center text-sm text-gray-700">
             <p class="mb-2 header-font text-lg text-[var(--color-pizarra)]">Ibidem: Recreación Histórica</p>
@@ -242,8 +210,7 @@
         </div>
     </footer>
 
-    <!-- 4. JavaScript para la funcionalidad del menú móvil -->
-    <script>
+    <!-- 4. JavaScript para la funcionalidad del menú móvil --><script>
         document.addEventListener('DOMContentLoaded', () => {
             const menuToggle = document.getElementById('menu-toggle');
             const mobileMenu = document.getElementById('mobile-menu');
