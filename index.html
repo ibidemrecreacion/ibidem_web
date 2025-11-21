@@ -38,7 +38,7 @@
             border: 3px double var(--color-dorado);
         }
         .text-shadow {
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8); /* Sombra más fuerte para legibilidad sobre imagen */
         }
         
         /* Estilo específico para el contenido de artículo */
@@ -178,7 +178,6 @@
         };
         
         const DATA = {
-            // ... Mantiene el resto de los datos ...
             general: {
                 email: "ibidemrecreacion@gmail.com",
                 facebook: "https://www.facebook.com/ibidem.ibidem/",
@@ -187,13 +186,26 @@
                 heroImageHome: "https://raw.githubusercontent.com/ibidemrecreacion/ibidem/refs/heads/main/Pepe_Larario.jpg"
             },
             home: {
-                title: "Ibidem: Recreación Histórica",
+                // Nota: Estos campos se usan ahora como configuración base, pero el texto del Hero se pasa directamente en el componente
+                title: "Ibidem",
                 subtitle: "Vivere Romanum",
                 intro: "Somos una asociación dedicada a la reconstrucción minuciosa de la vida civil romana, centrando nuestro esfuerzo en el detalle de la indumentaria, los oficios y la gastronomía del Imperio. Nuestro enfoque es simple: hacer vivir la historia basándonos siempre en fuentes primarias.",
                 pilares: [
-                    { title: "Rigor Histórico", text: "Nos basamos en fuentes primarias, tanto escritas como arqueológicas.", linkTo: "tabularium" },
-                    { title: "Vida Civil", text: "Recreamos bodas, funerales, cultos domésticos y festividades.", linkTo: "imagina" },
-                    { title: "Divulgación", text: "Llevamos la historia a yacimientos y museos con experiencia didáctica.", linkTo: "fasti" }
+                    { 
+                        title: "Rigor Histórico", 
+                        text: "Nos basamos en fuentes primarias, tanto escritas como arqueológicas e iconográficas, y metodología científica para cada recreación.", 
+                        linkTo: "tabularium" 
+                    },
+                    { 
+                        title: "Vida Civil", 
+                        text: "Recreamos los momentos más importantes de la vida civil: bodas, funerales, cultos domésticos y festividades, elaborando siempre nuestros propios trajes y utilería con rigor.", 
+                        linkTo: "imagina" 
+                    },
+                    { 
+                        title: "Divulgación", 
+                        text: "Llevamos la historia a yacimientos y museos con una experiencia didáctica y participativa, haciendo honor a nuestro nombre, Ibidem, \"en el mismo lugar\".", 
+                        linkTo: "fasti" 
+                    }
                 ]
             },
             nostri: {
@@ -234,46 +246,31 @@
                 ]
             },
             fasti: {
-                // EVENTOS FUTUROS
-                upcoming: [
-                    { 
-                        day: "12", month: "OCT", id: 1, title: "Ludi Romani: Feria", location: "Tarraco", 
-                        desc: "Participación en el festival romano, centrando nuestra actividad en la vida civil y el mercado.",
-                        main: true 
-                    },
-                    { 
-                        day: "30", month: "NOV", id: 2, title: "Conferencia: Toga", location: "Museo Local", 
-                        desc: "Charla sobre la evolución de la indumentaria.",
-                        main: false 
-                    },
-                    { 
-                        day: "14", month: "DIC", id: 3, title: "Cena de Sodales", location: "Sede", 
-                        desc: "Celebración privada de Saturnalia.",
-                        main: false 
-                    }
-                ],
-                // NUEVO: EVENTOS PASADOS
+                upcoming: [], // Vaciado para activar el mensaje de "Silentium"
                 past: [
                     {
                         id: 101,
                         title: "VII Recreación Romana de Numancia",
                         date: "15 - 17 de Septiembre, 2024",
                         desc: "Participación destacada en uno de los eventos de recreación histórica más importantes de la península, centrados en la vida civil y militar durante el asedio.",
-                        location: "Garray (Soria)"
+                        location: "Garray (Soria)",
+                        tags: ["Evento", "Vida Civil", "Militar"]
                     },
                     {
                         id: 102,
                         title: "Ludus Magnus en Tarraco Viva",
                         date: "1 - 3 de Junio, 2024",
                         desc: "Taller didáctico sobre los juegos romanos, con enfoque en el Tesserae y el Duodecim Scripta, atrayendo a un gran número de visitantes.",
-                        location: "Tarragona"
+                        location: "Tarragona",
+                        tags: ["Taller", "Juegos", "Divulgación"]
                     },
                     {
                         id: 103,
                         title: "Muestra de Artesanía en Emerita Augusta",
                         date: "12 - 14 de Abril, 2024",
                         desc: "Exposición y demostración de técnicas de alfarería y metalurgia romana, en colaboración con el Museo Nacional de Arte Romano.",
-                        location: "Mérida"
+                        location: "Mérida",
+                        tags: ["Artesanía", "Utillería"]
                     }
                 ]
             },
@@ -286,13 +283,14 @@
                 ]
             },
             imagina: {
+                // HE AÑADIDO ETIQUETAS (tags) A LAS IMÁGENES PARA EL FILTRO
                 images: [
-                    { src: "https://placehold.co/800x600/333333/F5EFE3?text=VINALIA", caption: "Vinalia Rustica" },
-                    { src: "https://placehold.co/800x600/D4A017/333333?text=ALFARERIA", caption: "Taller de Alfarería" },
-                    { src: "https://placehold.co/800x600/9A2A2A/F5EFE3?text=LEGIO", caption: "Campamento Legionario" },
-                    { src: "https://placehold.co/800x600/F5EFE3/333333?text=CENA", caption: "Cena Social" },
-                    { src: "https://placehold.co/800x600/552200/F5EFE3?text=MATRONA", caption: "Vestimenta Matrona" },
-                    { src: "https://placehold.co/800x600/222222/F5EFE3?text=SACRIFICIO", caption: "Ritual Público" },
+                    { src: "https://placehold.co/800x600/333333/F5EFE3?text=VINALIA", caption: "Vinalia Rustica", category: "Actividades" },
+                    { src: "https://placehold.co/800x600/D4A017/333333?text=ALFARERIA", caption: "Taller de Alfarería", category: "Utillería" },
+                    { src: "https://placehold.co/800x600/9A2A2A/F5EFE3?text=LEGIO", caption: "Campamento Legionario", category: "Actividades" },
+                    { src: "https://placehold.co/800x600/F5EFE3/333333?text=CENA", caption: "Cena Social", category: "Actividades" },
+                    { src: "https://placehold.co/800x600/552200/F5EFE3?text=MATRONA", caption: "Vestimenta Matrona", category: "Indumentaria" },
+                    { src: "https://placehold.co/800x600/222222/F5EFE3?text=SACRIFICIO", caption: "Ritual Público", category: "Actividades" },
                 ]
             }
         };
@@ -335,16 +333,31 @@
             </div>
         );
 
-        // --- Componente de Hero (Solo para la portada) ---
-        const PageHero = ({ image, title, subtitle, height = "h-[60vh]" }) => (
-            <div className={`relative ${height} w-full bg-cover bg-center rounded-xl overflow-hidden shadow-xl mb-12 group`} style={{ backgroundImage: `url(${image})` }}>
-                <div className="absolute inset-0 bg-pizarra/60 group-hover:bg-pizarra/50 transition duration-500"></div>
-                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center p-4">
-                    <h1 className="font-cinzel text-4xl md:text-6xl font-bold text-pergamino tracking-wider text-shadow mb-2">{title}</h1>
-                    {subtitle && <p className="font-cinzel text-dorado text-xl tracking-widest uppercase">{subtitle}</p>}
+        // --- Componente de Hero (MODIFICADO) ---
+        const PageHero = ({ image, title, subtitle, height = "h-[60vh]", align = "center" }) => {
+            // Definir clases de alineación
+            const alignClasses = align === "bottom-left" 
+                ? "items-start justify-end text-left pb-8 pl-8" 
+                : "items-center justify-center text-center";
+
+            const titleSize = align === "bottom-left" 
+                ? "text-lg md:text-xl max-w-3xl lowercase" // Forzada minúscula con lowercase, tamaño reducido
+                : "text-4xl md:text-6xl font-bold"; 
+            
+            const titleWeight = align === "bottom-left"
+                ? "font-normal italic" 
+                : "font-bold"; 
+
+            return (
+                <div className={`relative ${height} w-full bg-cover bg-center rounded-xl overflow-hidden shadow-xl mb-12 group`} style={{ backgroundImage: `url(${image})` }}>
+                    <div className="absolute inset-0 bg-pizarra/60 group-hover:bg-pizarra/50 transition duration-500"></div>
+                    <div className={`relative z-10 h-full flex flex-col ${alignClasses} p-4`}>
+                        <h1 className={`font-cinzel ${titleSize} ${titleWeight} text-pergamino tracking-wider text-shadow mb-2 leading-tight`}>{title}</h1>
+                        {subtitle && <p className="font-cinzel text-dorado text-xl tracking-widest uppercase">{subtitle}</p>}
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        };
 
         // --- Componente de Título de Sub-Sección ---
         const SectionTitle = ({ children, subtitle }) => (
@@ -564,8 +577,9 @@
             <div className="fade-in">
                 <PageHero 
                     image={DATA.general.heroImageHome} 
-                    title="IBIDEM" 
-                    subtitle="Recreación Histórica" 
+                    title="Reconstrucción histórica de la vida civil con rigor académico" 
+                    subtitle="" 
+                    align="bottom-left"
                 />
                 
                 <section className="max-w-4xl mx-auto text-center mb-16 px-4">
@@ -576,12 +590,15 @@
                 </section>
 
                 <section className="mb-16">
-                    <SectionTitle subtitle="Nuestra Fundamenta">NOSTRA FUNDAMENTA</SectionTitle>
+                    {/* Cambio de subtítulo solicitado */}
+                    <SectionTitle subtitle="Nuestros pilares">NOSTRA FUNDAMENTA</SectionTitle>
                     <div className="grid md:grid-cols-3 gap-8">
                         {DATA.home.pilares.map((pilar, index) => (
                             <div key={index} className="bg-white p-8 rounded-lg shadow-lg border-t-4 border-dorado hover:-translate-y-2 transition duration-300">
-                                <h3 className="font-cinzel text-xl font-bold text-pompeyano mb-4">{pilar.title}</h3>
-                                <p className="text-gray-700 mb-6">{pilar.text}</p>
+                                {/* Aumentado el tamaño del título del pilar */}
+                                <h3 className="font-cinzel text-2xl font-bold text-pompeyano mb-4">{pilar.title}</h3>
+                                {/* Texto justificado */}
+                                <p className="text-gray-700 mb-6 text-justify">{pilar.text}</p>
                                 <button 
                                     onClick={() => setPage(pilar.linkTo)} 
                                     className="text-dorado font-bold hover:text-pompeyano transition flex items-center text-sm uppercase tracking-widest"
@@ -599,9 +616,14 @@
             <div className="fade-in">
                 <SectionHeader title="NOSTRI" subtitle="Nuestra Historia" />
                 
+                {/* Primer bloque: Initia et Progressus */}
+                {/* Ajustado a max-w-4xl para consistencia de anchura */}
                 <section className="max-w-4xl mx-auto mb-16">
-                    <div className="bg-white p-8 md:p-12 rounded-lg shadow-xl border-roman">
-                        <h3 className="font-cinzel text-2xl font-bold text-pizarra mb-6">Initia et Progressus</h3>
+                    {/* Eliminado border-roman (cenefa) */}
+                    <div className="bg-white p-8 md:p-12 rounded-lg shadow-xl">
+                        <h3 className="font-cinzel text-2xl font-bold text-pizarra mb-1">Initia et Progressus</h3>
+                        {/* Nuevo subtítulo añadido */}
+                        <p className="font-cinzel text-pompeyano italic mb-6">origen y trayectoria</p>
                         <p className="text-lg text-justify leading-relaxed mb-6 text-gray-700">
                             {DATA.nostri.text}
                         </p>
@@ -611,16 +633,20 @@
                     </div>
                 </section>
 
-                <section className="max-w-3xl mx-auto text-center">
+                {/* Segundo bloque: Memoria Aeterna */}
+                {/* Ajustado a max-w-4xl para que tenga la MISMA anchura que el bloque anterior */}
+                <section className="max-w-4xl mx-auto text-center">
                     <SectionTitle>MEMORIA AETERNA</SectionTitle>
-                    <div className="bg-white p-8 rounded-xl shadow-xl border-roman-gold relative overflow-hidden">
+                    {/* Eliminado border-roman-gold (cenefa) */}
+                    <div className="bg-white p-8 rounded-xl shadow-xl relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-2 bg-dorado"></div>
                         <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
                             <img src={DATA.nostri.founder.image} alt="Fundador" className="w-32 h-32 rounded-full border-4 border-dorado object-cover shadow-md" />
                             <div className="text-left">
                                 <h4 className="font-cinzel text-2xl font-bold text-pizarra">{DATA.nostri.founder.name}</h4>
                                 <p className="text-dorado font-cinzel mb-3">{DATA.nostri.founder.years}</p>
-                                <p className="text-gray-600 italic">{DATA.nostri.founder.desc}</p>
+                                {/* Texto justificado añadido */}
+                                <p className="text-gray-600 italic text-justify">{DATA.nostri.founder.desc}</p>
                             </div>
                         </div>
                     </div>
@@ -632,7 +658,8 @@
             <div className="fade-in">
                 <SectionHeader title="ROSTRA" subtitle="Actualidad y Noticias" />
                 
-                <SectionTitle subtitle="Novedades del Mundo Romano">QUID NOVI?</SectionTitle>
+                {/* Changed subtitle as requested */}
+                <SectionTitle subtitle="Actualidad en arqueología y recreación">QUID NOVI?</SectionTitle>
                 
                 <div className="max-w-4xl mx-auto space-y-10">
                     {DATA.rostra.news.map((item, idx) => (
@@ -754,13 +781,15 @@
                             </div>
                         ))
                     ) : (
-                        <div className="bg-white p-8 rounded-xl shadow border border-gray-200 text-center">
-                            <p className="text-gray-500 italic">No hay eventos próximos programados. Consulta nuestros eventos pasados.</p>
+                        // MENSAJE DE VACÍO PERSONALIZADO EN LATÍN
+                        <div className="bg-white/60 p-12 rounded-xl shadow-inner border-2 border-gray-200 text-center">
+                             <h3 className="font-cinzel text-2xl font-bold text-pompeyano mb-2">"Silentium est in Fastis"</h3>
+                             <p className="text-gray-600 italic">Actualmente no hay eventos programados en el calendario.</p>
                         </div>
                     )}
                 </div>
 
-                {/* SECCIÓN 2: EVENTOS PASADOS (Línea de tiempo) */}
+                {/* SECCIÓN 2: EVENTOS PASADOS (Línea de tiempo) MEJORADA */}
                 <div className="mt-16">
                     <SectionTitle subtitle="Nuestros Viajes en el Tiempo">ACTA PRAETERITA</SectionTitle>
                     
@@ -770,7 +799,7 @@
                                 {/* Punto de la línea de tiempo */}
                                 <div className="absolute -left-[10px] top-2 w-4 h-4 rounded-full bg-dorado border-2 border-pompeyano z-10"></div>
                                 
-                                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300 border border-gray-100 relative">
+                                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300 border border-gray-100 relative group">
                                     <div className="md:flex justify-between items-start">
                                         <div>
                                             <h3 className="font-cinzel text-xl font-bold text-pompeyano">{event.title}</h3>
@@ -779,14 +808,27 @@
                                                 <span className="hidden md:inline">•</span>
                                                 <span className="flex items-center"><Icons.MapPin size={14} className="mr-1"/> {event.location}</span>
                                             </div>
+                                            
+                                            {/* Etiquetas de Evento Pasado */}
+                                            <div className="flex gap-2 mb-4">
+                                                {event.tags && event.tags.map((tag, tIdx) => (
+                                                    <span key={tIdx} className="text-xs bg-pergamino text-pizarra px-2 py-1 rounded border border-dorado/50">{tag}</span>
+                                                ))}
+                                            </div>
+
                                             <p className="text-gray-600 mb-4 text-justify leading-relaxed">{event.desc}</p>
                                         </div>
                                     </div>
+                                    
+                                    {/* Botón de Enlace a Galería Contextual */}
                                     <button 
-                                        onClick={() => setPage('imagina')} 
-                                        className="text-pizarra hover:text-pompeyano font-bold text-sm flex items-center transition border-t border-gray-100 pt-3 mt-2 w-full"
+                                        onClick={() => {
+                                            // Idealmente aquí pasaríamos un filtro a la galería, por ahora redirige
+                                            setPage('imagina');
+                                        }} 
+                                        className="text-pizarra hover:text-pompeyano font-bold text-sm flex items-center transition border-t border-gray-100 pt-3 mt-2 w-full group-hover:text-dorado"
                                     >
-                                        <Icons.Camera size={16} className="mr-2" /> Ver Fotos en Galería
+                                        <Icons.Camera size={16} className="mr-2" /> Ver Reportaje Gráfico
                                     </button>
                                 </div>
                             </div>
@@ -800,43 +842,77 @@
         const PageImagina = () => {
             const [lightboxOpen, setLightboxOpen] = useState(false);
             const [currentImageIndex, setCurrentImageIndex] = useState(0);
+            // ESTADO PARA EL FILTRO DE GALERÍA
+            const [filter, setFilter] = useState('Omnes');
+
+            // Categorías disponibles
+            const categories = ['Omnes', 'Indumentaria', 'Utillería', 'Actividades'];
+
+            // Filtrado de imágenes
+            const filteredImages = filter === 'Omnes' 
+                ? DATA.imagina.images 
+                : DATA.imagina.images.filter(img => img.category === filter);
 
             const openLightbox = (index) => {
+                // Necesitamos encontrar el índice real en el array completo si estamos filtrando
+                // Pero para simplificar la navegación en lightbox con filtros, usaremos el índice del array filtrado
                 setCurrentImageIndex(index);
                 setLightboxOpen(true);
             };
 
             const nextImage = (e) => {
                 e.stopPropagation();
-                setCurrentImageIndex((prev) => (prev + 1) % DATA.imagina.images.length);
+                setCurrentImageIndex((prev) => (prev + 1) % filteredImages.length);
             };
 
             const prevImage = (e) => {
                 e.stopPropagation();
-                setCurrentImageIndex((prev) => (prev - 1 + DATA.imagina.images.length) % DATA.imagina.images.length);
+                setCurrentImageIndex((prev) => (prev - 1 + filteredImages.length) % filteredImages.length);
             };
 
             return (
                 <div className="fade-in">
                     <SectionHeader title="IMAGINA" subtitle="Galería Multimedia" />
                     
+                    {/* BOTONES DE FILTRO */}
+                    <div className="flex flex-wrap justify-center gap-4 mb-12">
+                        {categories.map(cat => (
+                            <button 
+                                key={cat}
+                                onClick={() => setFilter(cat)}
+                                className={`px-6 py-2 rounded-full font-cinzel text-sm transition-all duration-300 ${
+                                    filter === cat 
+                                    ? 'bg-pompeyano text-white shadow-lg scale-105' 
+                                    : 'bg-white text-pizarra border border-gray-300 hover:border-dorado hover:text-dorado'
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                        {DATA.imagina.images.map((img, idx) => (
+                        {filteredImages.map((img, idx) => (
                             <div 
                                 key={idx} 
                                 className="relative aspect-square group overflow-hidden rounded-lg shadow-lg cursor-pointer border-2 border-transparent hover:border-dorado transition-all"
                                 onClick={() => openLightbox(idx)}
                             >
                                 <img src={img.src} alt={img.caption} className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-4">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
+                                    <span className="text-dorado text-xs font-bold uppercase tracking-wider mb-1">{img.category}</span>
                                     <p className="text-pergamino font-cinzel text-sm">{img.caption}</p>
                                 </div>
                             </div>
                         ))}
                     </div>
+                    
+                    {filteredImages.length === 0 && (
+                        <p className="text-center text-gray-500 italic mt-12">No hay imágenes en esta categoría.</p>
+                    )}
 
                     {/* LIGHTBOX (Visor de fotos) */}
-                    {lightboxOpen && (
+                    {lightboxOpen && filteredImages.length > 0 && (
                         <div 
                             className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 fade-in"
                             onClick={() => setLightboxOpen(false)}
@@ -851,13 +927,18 @@
                             
                             <div className="max-w-5xl max-h-[90vh] flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
                                 <img 
-                                    src={DATA.imagina.images[currentImageIndex].src} 
+                                    src={filteredImages[currentImageIndex].src} 
                                     alt="Visor" 
                                     className="max-w-full max-h-[80vh] object-contain border-4 border-pizarra shadow-2xl"
                                 />
-                                <p className="text-pergamino font-cinzel text-xl mt-4 tracking-wider">
-                                    {DATA.imagina.images[currentImageIndex].caption}
-                                </p>
+                                <div className="mt-4 text-center">
+                                    <span className="block text-dorado text-xs uppercase tracking-widest mb-1">
+                                        {filteredImages[currentImageIndex].category}
+                                    </span>
+                                    <p className="text-pergamino font-cinzel text-xl tracking-wider">
+                                        {filteredImages[currentImageIndex].caption}
+                                    </p>
+                                </div>
                             </div>
 
                             <button className="absolute right-2 md:right-8 text-white hover:text-dorado" onClick={nextImage}>
@@ -906,14 +987,14 @@
                         return <PageHome setPage={setPage} />;
                     case 'nostri':
                         return <PageNostri />;
-                    case 'rostra':
-                        return <PageRostra />;
-                    case 'tabularium':
-                        return <PageTabularium setPage={setPage} />;
                     case 'fasti':
                         return <PageFasti setPage={setPage} />; 
                     case 'imagina':
                         return <PageImagina />;
+                    case 'tabularium':
+                        return <PageTabularium setPage={setPage} />;
+                    case 'rostra':
+                        return <PageRostra />;
                     case 'article':
                         return <PageArticle articleId={1} setPage={setPage} />; 
                     case 'eventDetail':
@@ -932,14 +1013,14 @@
                                 <img src={DATA.general.logoUrl} alt="Ibidem Logo" className="h-12 w-auto" onError={(e) => {e.target.onerror = null; e.target.src='https://placehold.co/120x48/F5EFE3/9A2A2A?text=IBIDEM'}} />
                             </div>
                             
-                            {/* Menu Desktop */}
+                            {/* Menu Desktop - REORDENADO */}
                             <nav className="hidden md:flex space-x-8">
                                 <NavLink target="home" label="DOMUS" />
                                 <NavLink target="nostri" label="NOSTRI" />
-                                <NavLink target="rostra" label="ROSTRA" />
-                                <NavLink target="tabularium" label="TABULARIUM" />
                                 <NavLink target="fasti" label="FASTI" />
                                 <NavLink target="imagina" label="IMAGINA" />
+                                <NavLink target="tabularium" label="TABULARIUM" />
+                                <NavLink target="rostra" label="ROSTRA" />
                             </nav>
 
                             {/* Botón Móvil */}
@@ -948,15 +1029,15 @@
                             </button>
                         </div>
 
-                        {/* Menu Móvil */}
+                        {/* Menu Móvil - REORDENADO */}
                         {mobileMenuOpen && (
                             <div className="md:hidden bg-pompeyano fade-in">
                                 <NavLink target="home" label="DOMUS" isMobile={true} />
                                 <NavLink target="nostri" label="NOSTRI" isMobile={true} />
-                                <NavLink target="rostra" label="ROSTRA" isMobile={true} />
-                                <NavLink target="tabularium" label="TABULARIUM" isMobile={true} />
                                 <NavLink target="fasti" label="FASTI" isMobile={true} />
                                 <NavLink target="imagina" label="IMAGINA" isMobile={true} />
+                                <NavLink target="tabularium" label="TABULARIUM" isMobile={true} />
+                                <NavLink target="rostra" label="ROSTRA" isMobile={true} />
                             </div>
                         )}
                     </header>
@@ -997,6 +1078,3 @@
     </script>
 </body>
 </html>
-
-
-
