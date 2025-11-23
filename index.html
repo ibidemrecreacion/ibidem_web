@@ -65,7 +65,7 @@
             outline-offset: 2px;
         }
         
-        /* --- CORRECCIÓN 1: OCULTAR "SALTAR AL CONTENIDO" POR DEFECTO --- */
+        /* CORRECCIÓN 1: OCULTAR "SALTAR AL CONTENIDO" POR DEFECTO */
         .skip-link {
             position: absolute; /* Sacarlo del flujo normal */
             left: -9999px;      /* Moverlo fuera de la pantalla */
@@ -194,6 +194,75 @@
                 {subtitle && <p className="font-cinzel text-dorado text-lg tracking-widest uppercase italic mt-1">{subtitle}</p>}
             </header>
         );
+
+        // --- CORRECCIÓN 2: DEFINICIÓN DEL MODAL LEGAL FALTANTE ---
+        const ModalLegal = ({ type, onClose }) => {
+            if (!type) return null;
+            
+            const titles = {
+                legal: "Aviso Legal",
+                accesibilidad: "Declaración de Accesibilidad"
+            };
+            
+            // Contenido simplificado
+            const content = {
+                legal: (
+                    <>
+                        <p className="mb-4 font-bold">TITULARIDAD:</p>
+                        <p className="mb-4">Ibidem, Asociación de Recreación Histórica, con domicilio social en Málaga.</p>
+                        <p className="mb-4 font-bold">OBJETO:</p>
+                        <p className="mb-4">La presente web tiene como objeto dar a conocer la actividad de la asociación y sus proyectos culturales.</p>
+                        <p className="mb-4 font-bold">PROPIEDAD INTELECTUAL:</p>
+                        <p className="mb-4">Todos los contenidos (textos, imágenes, logos, etc.) son propiedad de Ibidem o de sus respectivos autores. Queda prohibida la reproducción, distribución o modificación sin consentimiento expreso y por escrito.</p>
+                    </>
+                ),
+                accesibilidad: (
+                    <>
+                        <p className="mb-4 font-bold">COMPROMISO:</p>
+                        <p className="mb-4">Estamos comprometidos con la accesibilidad de nuestra web de acuerdo con el Real Decreto 1112/2018. Aunque esta es una web de demostración, se han aplicado técnicas básicas para facilitar el acceso a la información.</p>
+                        <p className="mb-4 font-bold">MEDIDAS ADOPTADAS:</p>
+                        <ul className="list-disc ml-5 mb-4 space-y-1">
+                            <li>Uso de alto contraste.</li>
+                            <li>Navegación por teclado (enlace "Saltar al contenido principal").</li>
+                            <li>Textos alternativos (alt) para imágenes.</li>
+                            <li>Estructura semántica clara (ARIA roles).</li>
+                        </ul>
+                        <p className="mb-4 font-bold">CONTACTO:</p>
+                        <p className="mb-4">Si encuentra barreras de accesibilidad, por favor contacte a través del correo electrónico facilitado en el pie de página para reportarlo.</p>
+                    </>
+                )
+            };
+
+            return (
+                <div 
+                    className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-[100001] fade-in" 
+                    onClick={onClose}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="modal-title"
+                >
+                    <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 md:p-8 relative" onClick={e => e.stopPropagation()}>
+                        <button 
+                            className="absolute top-3 right-3 text-pizarra hover:text-pompeyano p-2 focus:ring-2 focus:ring-pompeyano rounded"
+                            onClick={onClose}
+                            aria-label="Cerrar ventana emergente"
+                        >
+                            <Icon path={Icons.X} size={24}/>
+                        </button>
+                        <h2 id="modal-title" className="font-cinzel text-xl md:text-2xl font-bold text-pompeyano mb-4 border-b pb-2">{titles[type]}</h2>
+                        <div className="text-gray-700 text-sm font-merriweather text-reading max-h-[60vh] overflow-y-auto pr-2">
+                            {content[type]}
+                        </div>
+                        <button 
+                            className="mt-6 w-full bg-pompeyano text-white font-cinzel tracking-widest py-2 rounded hover:bg-pompeyano/80 transition focus:ring-2 focus:ring-pompeyano"
+                            onClick={onClose}
+                        >
+                            ACEPTAR Y CERRAR
+                        </button>
+                    </div>
+                </div>
+            );
+        };
 
         // --- PÁGINAS ---
 
@@ -505,7 +574,7 @@
                         </div>
                     </div>
 
-                    {/* CORRECCIÓN 2: LIGHTBOX MODAL - Usar h-screen y max-h-full para evitar clipping. */}
+                    {/* CORRECCIÓN 2: LIGHTBOX MODAL - Eliminado el comentario JS inválido y ajustado el layout. */}
                     {lightboxIndex >= 0 && currentImg && (
                         <div className="fixed inset-0 bg-black/95 flex flex-col justify-between z-[99999] h-screen" role="dialog" aria-modal="true" aria-label="Visor de imágenes">
                             <button 
@@ -517,12 +586,11 @@
                                 <Icon path={Icons.X} size={32}/>
                             </button>
                             
-                            {/* Flex-grow asegura que esta área tome el espacio restante */}
+                            {/* Flex-grow asegura que esta área tome el espacio restante para evitar el clipping del header/footer. */}
                             <div className="flex-grow flex items-center justify-center p-4 overflow-hidden relative w-full" onClick={() => setLightboxIndex(-1)}>
                                 <img 
                                     src={currentImg.src} 
                                     alt={currentImg.caption || "Imagen ampliada"} 
-                                    /* La clave es max-h-full: se ajusta al 100% de la altura disponible de su contenedor (el área flex-grow) */
                                     className="max-w-full max-h-full shadow-2xl border border-pizarra/50 object-contain rounded-sm" 
                                     onClick={e => e.stopPropagation()} 
                                 />
