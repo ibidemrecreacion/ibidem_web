@@ -125,6 +125,14 @@
         "location": { "locality": "Puente Genil", "place": "Villa Romana Fuente Álamo" },
         "desc": "Evento temático basado en el polémico emperador Heliogábalo y las costumbres suntuosas de la corte.",
         "tags": ["Temático", "Realeza"]
+        },
+        {
+        "id": 1,
+        "title": "Funus immaturum",
+        "date": "2 de noviembre, 2024",
+        "location": { "locality": "Monturque (Córdoba)", "place": "Criptopórtico" },
+        "desc": "Recreación de los ritos fúnebres (funus) de un niño en una familia patricia de la Antigua Roma.",
+        "tags": ["Rito", "Funerario"]
         }
     ]
   },
