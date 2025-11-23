@@ -104,7 +104,7 @@
         },
         {
         "id": 4,
-        "title": "Adelfopoiesis: Hermandad",
+        "title": "Adelfopoiesis",
         "date": "27 de septiembre, 2025",
         "location": { "locality": "Córdoba", "place": "Casa Árabe" },
         "desc": "Recreación del rito de 'hermandad' o 'adopción ritual' en un enclave de diálogo cultural.",
@@ -112,7 +112,7 @@
         },
         {
         "id": 3,
-        "title": "Adelfopoiesis: Fraternidad Cívica",
+        "title": "Adelfopoiesis",
         "date": "13 de septiembre, 2025",
         "location": { "locality": "Puente Genil", "place": "Villa Romana Fuente Álamo" },
         "desc": "Ritual que exploraba la institución de la Adelfopoiesis en el marco de la villa romana.",
@@ -124,7 +124,7 @@
         "date": "26 de julio, 2025",
         "location": { "locality": "Puente Genil", "place": "Villa Romana Fuente Álamo" },
         "desc": "Evento temático basado en el polémico emperador Heliogábalo y las costumbres suntuosas de la corte.",
-        "tags": ["Temático", "Realeza"]
+        "tags": ["Temático", "Emperador"]
         },
         {
         "id": 1,
@@ -133,7 +133,15 @@
         "location": { "locality": "Monturque (Córdoba)", "place": "Criptopórtico" },
         "desc": "Recreación de los ritos fúnebres (funus) de un niño en una familia patricia de la Antigua Roma.",
         "tags": ["Rito", "Funerario"]
-        }
+        },
+        {
+        "id": 1,
+        "title": "Las rosas de Heliogábalo",
+        "date": "26 de octubre, 2024",
+        "location": { "locality": "Córdoba", "place": "Casa Árabe" },
+        "desc": "Recreación de unonde los episodios más conocidos de la vida del polémico emperador, Heliogábalo.",
+        "tags": ["Temático", "Emperador", "convivium"]
+        },
     ]
   },
   "imagina": [
