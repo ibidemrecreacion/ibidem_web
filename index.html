@@ -4,25 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO BÁSICO (OJO: Esto sigue siendo estático, no cambiará al compartir en redes sin SSR) -->
-    <title>Ibidem: Recreación Histórica</title>
-    <meta name="description" content="Asociación de recreación histórica dedicada a la reconstrucción minuciosa de la vida civil romana.">
+    <!-- 1. IDENTIDAD Y SEO -->
+    <title>Ibidem: Recreación Histórica | Vivere Romanum</title>
+    <meta name="description" content="Asociación de recreación histórica dedicada a la reconstrucción minuciosa de la vida civil romana, indumentaria y ritos en Andalucía.">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/ibidemrecreacion/ibidem/refs/heads/main/Ibidem_logo_nuevo.png">
 
-    <!-- LIBRERÍAS (Versiones fijas para estabilidad) -->
+    <!-- LIBRERÍAS (Versiones de Producción para estabilidad) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone@7.23.6/babel.min.js"></script>
     
     <!-- FUENTES -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
 
-    <!-- ESTILOS -->
+    <!-- ESTILOS ORIGINALES RESTAURADOS -->
     <style>
         :root {
             --color-pompeyano: #9A2A2A;
@@ -36,12 +34,16 @@
             background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
             color: var(--color-pizarra);
             margin: 0;
-            overflow-x: hidden; /* Prevenir scroll horizontal accidental en móviles */
+            overflow-x: hidden;
         }
         .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-merriweather { font-family: 'Merriweather', serif; }
         
         .text-reading { 
             text-align: justify; 
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
             hyphens: auto;
             line-height: 1.8;
         }
@@ -49,31 +51,33 @@
         .biblio-item {
             padding-left: 1.5rem;
             text-indent: -1.5rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
+            text-align: left;
         }
 
-        /* Utilidades de animación y scroll */
-        .fade-in { animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .border-roman { border: 3px double var(--color-pompeyano); }
+        .text-shadow { text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+        
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .fade-in { animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        #loader {
+        /* Cargador y Pantalla de Error */
+        #loader, #error-screen {
             position: fixed; inset: 0; background: var(--color-pergamino);
             display: flex; justify-content: center; align-items: center; z-index: 9999;
-            flex-direction: column; transition: opacity 0.5s ease;
+            flex-direction: column; text-align: center; padding: 20px;
         }
+        #error-screen { display: none; }
         
         .spinner {
-            width: 40px; height: 40px; border: 3px solid var(--color-dorado);
-            border-top: 3px solid var(--color-pompeyano); border-radius: 50%;
+            width: 50px; height: 50px; border: 5px solid var(--color-dorado);
+            border-top: 5px solid var(--color-pompeyano); border-radius: 50%;
             animation: spin 1s linear infinite; margin-bottom: 20px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Scrollbar personalizada */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--color-pergamino); }
-        ::-webkit-scrollbar-thumb { background: var(--color-dorado); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--color-pompeyano); }
     </style>
     
     <script>
@@ -85,10 +89,6 @@
                         pergamino: '#F5EFE3',
                         pizarra: '#2A2A2A',
                         dorado: '#B8860B',
-                    },
-                    fontFamily: {
-                        serif: ['Merriweather', 'serif'],
-                        display: ['Cinzel', 'serif']
                     }
                 }
             }
@@ -96,490 +96,648 @@
     </script>
 </head>
 <body>
+    <!-- PANTALLA DE CARGA CON LOGO -->
     <div id="loader">
         <div class="spinner"></div>
-        <p class="font-cinzel text-dorado text-sm tracking-widest">IBIDEM</p>
+        <img src="https://raw.githubusercontent.com/ibidemrecreacion/ibidem/refs/heads/main/Ibidem_logo_nuevo.png" alt="Cargando..." style="height: 60px; width: auto; margin-bottom: 10px;">
+        <p style="font-family: 'Cinzel', serif; color: #B8860B; font-size: 0.8rem;">CARGANDO HISTORIA...</p>
+    </div>
+
+    <!-- PANTALLA DE ERROR -->
+    <div id="error-screen">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#9A2A2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <h2 style="font-family: 'Cinzel', serif; color: #9A2A2A; font-weight: bold; font-size: 1.5rem; margin-bottom: 10px;">DISCULPE LAS MOLESTIAS</h2>
+        <p style="font-family: 'Merriweather', serif; color: #2A2A2A; font-size: 1rem; max-width: 500px;">Estamos actualizando nuestros archivos históricos o ha ocurrido un error de conexión.</p>
+        <p id="technical-error" style="font-family: monospace; color: #999; font-size: 0.7rem; margin-top: 20px;"></p>
     </div>
 
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useMemo, useRef } = React;
 
-        // --- UTILS ---
+        const { useState, useEffect, useMemo } = React;
         
-        // Función para parsear fechas simples en español y comparar (Asume formato "D de Mes, YYYY")
+        // --- UTILIDADES ---
         const parseDate = (dateStr) => {
+            if(!dateStr) return new Date(0);
             const months = {
                 "enero": 0, "febrero": 1, "marzo": 2, "abril": 3, "mayo": 4, "junio": 5,
                 "julio": 6, "agosto": 7, "septiembre": 8, "octubre": 9, "noviembre": 10, "diciembre": 11
             };
             try {
-                // Limpieza básica
                 const clean = dateStr.toLowerCase().replace(/de /g, '').replace(/,/g, '').split(' ');
-                // Formato esperado: [dia, mes, año]
-                const day = parseInt(clean[0]);
-                const month = months[clean[1]];
-                const year = parseInt(clean[2]);
-                return new Date(year, month, day);
-            } catch (e) {
-                return new Date(0); // Fecha muy antigua si falla
-            }
+                // Intentar encontrar el mes en el string
+                let monthIndex = -1;
+                let day = 1;
+                let year = new Date().getFullYear();
+
+                clean.forEach(part => {
+                    if (months[part] !== undefined) monthIndex = months[part];
+                    else if (!isNaN(part) && parseInt(part) > 31) year = parseInt(part);
+                    else if (!isNaN(part)) day = parseInt(part);
+                });
+
+                if (monthIndex === -1) return new Date(0);
+                return new Date(year, monthIndex, day);
+            } catch (e) { return new Date(0); }
         };
 
-        const usePageTitle = (title) => {
-            useEffect(() => {
-                document.title = title ? `${title} | Ibidem` : "Ibidem: Recreación Histórica";
-            }, [title]);
-        };
+        // --- COMPONENTES VISUALES ORIGINALES ---
 
-        // --- COMPONENTES UI ---
-
-        const Icon = ({ path, size = 24, className = "" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true"><path d={path} /></svg>
+        const SectionTitle = ({ children, subtitle }) => (
+            <div className="text-center mb-10 mt-12 fade-in">
+                <h2 className="font-cinzel text-3xl md:text-4xl font-bold text-pizarra inline-block border-b-4 border-dorado pb-2 px-4">{children}</h2>
+                {subtitle && <p className="font-merriweather italic text-pompeyano mt-4 text-lg">{subtitle}</p>}
+            </div>
         );
 
+        const Icon = ({ path, size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d={path} /></svg>
+        );
+        
         const Icons = {
             Menu: "M4 12h16M4 6h16M4 18h16",
             X: "M18 6L6 18M6 6l12 12",
             Mail: "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6",
+            MapPin: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z M12 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6",
             ArrowLeft: "M19 12H5 M12 19l-7-7 7-7",
+            ChevronLeft: "M15 18l-6-6 6-6",
             ChevronRight: "M9 18l6 6-6 6",
             Camera: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8",
-            ExternalLink: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"
+            BookOpen: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
         };
 
         const SectionHeader = ({ title, subtitle }) => (
-            <header className="w-full bg-pizarra text-pergamino p-6 md:p-10 rounded-sm shadow-xl mb-12 text-center border-b-4 border-dorado fade-in">
-                <h1 className="font-display text-3xl md:text-5xl font-bold tracking-wider mb-2">{title}</h1>
-                {subtitle && <p className="font-display text-dorado text-sm md:text-lg tracking-[0.2em] uppercase italic opacity-90">{subtitle}</p>}
-            </header>
+            <div className="w-full bg-pizarra text-pergamino p-6 md:p-8 rounded-xl shadow-xl mb-12 text-center border-b-4 border-dorado fade-in">
+                <h1 className="font-cinzel text-3xl md:text-5xl font-bold tracking-wider mb-1">{title}</h1>
+                {subtitle && <p className="font-cinzel text-dorado text-lg tracking-widest uppercase italic mt-1">{subtitle}</p>}
+            </div>
         );
 
         // --- PÁGINAS ---
 
-        const PageHome = ({ data }) => {
-            usePageTitle("Inicio");
-            return (
-                <div className="fade-in space-y-16">
-                    <section className="relative h-[60vh] md:h-[70vh] w-full rounded-sm overflow-hidden shadow-2xl group">
-                        <img 
-                            src={data.general.heroImageHome} 
-                            alt="Recreación histórica romana" 
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[20s] group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-pizarra via-pizarra/40 to-transparent opacity-90"></div>
-                        <div className="absolute bottom-0 left-0 p-6 md:p-16 max-w-3xl">
-                            <h2 className="font-serif text-2xl md:text-4xl italic text-pergamino leading-relaxed drop-shadow-lg border-l-4 border-dorado pl-6">
-                                {data.home.heroTitle}
-                            </h2>
-                        </div>
-                    </section>
-
-                    <section className="max-w-4xl mx-auto px-4 text-center">
-                        <p className="text-xl md:text-2xl text-pizarra leading-relaxed font-light">{data.home.intro}</p>
-                        <div className="h-1 w-24 bg-pompeyano mx-auto mt-8"></div>
-                    </section>
-
-                    <section className="grid md:grid-cols-3 gap-8 px-4">
-                        {data.home.pilares.map((pilar, index) => (
-                            <article key={index} className="bg-white p-8 rounded-sm shadow-lg border-t-4 border-dorado hover:shadow-2xl transition-shadow duration-300 flex flex-col">
-                                <h3 className="font-display text-xl font-bold text-pompeyano mb-4">{pilar.title}</h3>
-                                <p className="text-gray-700 mb-6 flex-grow leading-relaxed">{pilar.text}</p>
-                                <a href={`#${pilar.linkTo}`} className="text-dorado font-bold text-xs uppercase tracking-widest hover:text-pompeyano flex items-center self-start">
-                                    Saber más <Icon path={Icons.ChevronRight} size={16} className="ml-1"/>
-                                </a>
-                            </article>
-                        ))}
-                    </section>
-                </div>
-            );
-        };
-
-        const PageNostri = ({ data }) => {
-            usePageTitle("Nostri");
-            return (
-                <div className="fade-in">
-                    <SectionHeader title="NOSTRI" subtitle="Quienes Somos" />
-                    
-                    <div className="grid md:grid-cols-12 gap-12 items-start max-w-6xl mx-auto">
-                        <div className="md:col-span-8 bg-white p-8 md:p-12 rounded-sm shadow-xl text-reading text-lg text-gray-800 border-l-4 border-pompeyano">
-                            {data.nostri.mainText.split('\n').map((par, i) => <p key={i} className="mb-4 last:mb-0">{par}</p>)}
-                        </div>
-                        
-                        <aside className="md:col-span-4 bg-pizarra text-pergamino p-8 rounded-sm shadow-xl sticky top-24">
-                            <div className="relative mb-6">
-                                <img src={data.nostri.founder.image} alt={data.nostri.founder.name} className="w-full aspect-square object-cover rounded-sm border-2 border-dorado grayscale hover:grayscale-0 transition duration-500" loading="lazy" />
-                                <div className="absolute -bottom-4 -right-4 bg-dorado text-pizarra px-4 py-2 font-display text-xs font-bold shadow-lg">FUNDADOR</div>
-                            </div>
-                            <h4 className="font-display text-2xl font-bold text-white mb-1">{data.nostri.founder.name}</h4>
-                            <p className="text-dorado font-display text-sm mb-4 tracking-widest">{data.nostri.founder.years}</p>
-                            <p className="text-gray-400 italic text-sm leading-relaxed border-t border-gray-700 pt-4">
-                                {data.nostri.founder.desc}
-                            </p>
-                        </aside>
+        const PageHome = ({ data }) => (
+            <div className="fade-in">
+                <div className="relative h-[60vh] w-full bg-cover bg-center rounded-xl overflow-hidden shadow-xl mb-12 group" style={{ backgroundImage: `url(${data.general.heroImageHome})` }}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-pizarra/90 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-6 left-6 md:bottom-12 md:left-12 max-w-2xl p-4">
+                        <h1 className="font-merriweather text-xl md:text-2xl italic text-pergamino lowercase text-shadow leading-relaxed border-l-4 border-dorado pl-4">
+                            {data.home.heroTitle}
+                        </h1>
                     </div>
                 </div>
-            );
-        };
+                <section className="max-w-4xl mx-auto text-center mb-16 px-4">
+                    <p className="text-lg md:text-xl text-pizarra leading-relaxed text-reading">{data.home.intro}</p>
+                </section>
+                <div className="grid md:grid-cols-3 gap-8 mb-12">
+                    {data.home.pilares.map((pilar, index) => (
+                        <div key={index} className="bg-white p-6 rounded-lg shadow-lg border-t-4 border-dorado hover:-translate-y-1 transition-transform duration-300">
+                            <h3 className="font-cinzel text-xl font-bold text-pompeyano mb-3">{pilar.title}</h3>
+                            <p className="text-gray-700 mb-4 text-sm text-reading">{pilar.text}</p>
+                            <a href={`#${pilar.linkTo}`} className="text-dorado font-bold text-xs uppercase tracking-widest hover:text-pompeyano">Saber más &rarr;</a>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+
+        const PageNostri = ({ data }) => (
+            <div className="fade-in">
+                <SectionHeader title="NOSTRI" subtitle="Nuestra Historia" />
+                <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-xl mb-12 border-l-4 border-pompeyano">
+                    {/* Renderizado seguro de párrafos */}
+                    {data.nostri.mainText.split('\n').map((paragraph, idx) => (
+                        paragraph.trim() && <p key={idx} className="text-lg text-reading leading-relaxed mb-4 text-gray-700">{paragraph}</p>
+                    ))}
+                </div>
+                <div className="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-xl flex flex-col md:flex-row gap-8 items-center md:items-start">
+                    <img src={data.nostri.founder.image} alt="Fundador" className="w-32 h-32 rounded-full border-4 border-dorado object-cover" loading="lazy" />
+                    <div>
+                        <div className="flex items-center gap-3 mb-1">
+                            <h4 className="font-cinzel text-2xl font-bold text-pizarra">{data.nostri.founder.name}</h4>
+                            <span className="bg-dorado text-white text-[10px] px-2 py-1 rounded font-cinzel">FUNDADOR</span>
+                        </div>
+                        <p className="text-pompeyano font-cinzel text-sm mb-3 tracking-widest">{data.nostri.founder.years}</p>
+                        <p className="text-gray-600 italic text-reading text-sm">{data.nostri.founder.desc}</p>
+                    </div>
+                </div>
+            </div>
+        );
 
         const PageFasti = ({ data }) => {
-            usePageTitle("Fasti");
-            
-            // Lógica de separación de eventos automática basada en la fecha actual
+            // LÓGICA MEJORADA: Clasificación automática pero con ESTÉTICA ORIGINAL
             const { future, past } = useMemo(() => {
                 const today = new Date();
-                const allEvents = [...(data.fasti.past || []), ...(data.fasti.upcoming || [])];
-                
-                // Evitar duplicados por ID
+                // Combinar listas por si acaso el JSON original las separó mal, o usar las del JSON si se prefiere.
+                // Aquí las combinamos y reclasificamos para ser precisos.
+                const allEvents = [...(data.fasti.upcoming || []), ...(data.fasti.past || [])];
                 const uniqueEvents = Array.from(new Map(allEvents.map(item => [item.id, item])).values());
-
+                
                 const future = [];
                 const past = [];
-
+                
                 uniqueEvents.forEach(evt => {
                     const evtDate = parseDate(evt.date);
-                    // Si la fecha es hoy o futuro, va a future
-                    if (evtDate >= today.setHours(0,0,0,0)) {
-                        future.push(evt);
-                    } else {
-                        past.push(evt);
-                    }
+                    // Resetear horas para comparar solo fechas
+                    const dateCheck = new Date(evtDate);
+                    dateCheck.setHours(0,0,0,0);
+                    const todayCheck = new Date();
+                    todayCheck.setHours(0,0,0,0);
+
+                    if (dateCheck >= todayCheck) future.push(evt);
+                    else past.push(evt);
                 });
 
-                // Ordenar: Futuros (más cercano primero), Pasados (más reciente primero)
+                // Ordenar cronológicamente
                 future.sort((a, b) => parseDate(a.date) - parseDate(b.date));
-                past.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+                past.sort((a, b) => parseDate(b.date) - parseDate(a.date)); // Más reciente primero
 
                 return { future, past };
             }, [data.fasti]);
 
             const EventCard = ({ event }) => (
-                <div className="relative pl-8 md:pl-12 py-2 group">
-                    {/* Línea de tiempo */}
-                    <div className="absolute left-0 top-0 bottom-0 w-px bg-pompeyano/30 group-last:bottom-auto group-last:h-8"></div>
-                    <div className="absolute left-[-4px] top-8 w-2 h-2 rounded-full bg-dorado ring-4 ring-white z-10"></div>
-                    
-                    <div className="bg-white p-6 rounded-sm shadow-md hover:shadow-lg transition-all border-l-4 border-transparent hover:border-pompeyano">
-                        <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-3">
-                            <h3 className="font-display text-xl font-bold text-pompeyano">{event.title}</h3>
-                            <span className="inline-block bg-gray-100 text-gray-600 text-[10px] uppercase tracking-widest px-2 py-1 rounded mt-2 md:mt-0">{event.date}</span>
+                <div className="relative pl-6 md:pl-12 mb-8 fade-in group">
+                    <div className="absolute -left-[10px] top-4 w-4 h-4 rounded-full bg-dorado border-2 border-pompeyano z-10"></div>
+                    {/* Línea conectora */}
+                    <div className="absolute left-[-3px] top-8 bottom-[-32px] w-[2px] bg-pompeyano/20 group-last:hidden"></div>
+
+                    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow">
+                        <div className="flex flex-col md:flex-row justify-between md:items-start mb-2">
+                            <h3 className="font-cinzel text-xl font-bold text-pompeyano">{event.title}</h3>
+                            {event.tags && (
+                                <div className="flex gap-1 mt-2 md:mt-0">
+                                    {event.tags.map((t, i) => <span key={i} className="text-[10px] border border-dorado text-dorado px-1 rounded uppercase">{t}</span>)}
+                                </div>
+                            )}
                         </div>
-                        <div className="flex items-center text-sm text-gray-500 mb-3 italic font-serif">
-                            <span className="font-bold mr-1 not-italic text-pizarra">{event.location.locality}</span> — {event.location.place}
-                        </div>
-                        <p className="text-gray-700 text-sm leading-relaxed mb-4">{event.desc}</p>
+                        <p className="font-merriweather text-sm text-pizarra font-bold uppercase tracking-wide">{event.location.locality}</p>
+                        <p className="font-merriweather text-sm text-gray-600 italic mb-2">{event.location.place}</p>
+                        <p className="font-cinzel text-xs text-dorado mb-4 lowercase bg-pergamino inline-block px-2 py-1 rounded">{event.date}</p>
+                        <p className="text-gray-600 mb-4 text-reading text-sm">{event.desc}</p>
                         
-                        {event.tags && (
-                            <div className="flex gap-2 flex-wrap">
-                                {event.tags.map(t => <span key={t} className="text-[10px] text-dorado border border-dorado/30 px-2 py-0.5 rounded-full uppercase">{t}</span>)}
-                            </div>
-                        )}
+                        {/* ENLACE A GALERÍA: Lógica crítica restaurada */}
+                        <a href={`#imagina?id=${event.id}`} className="inline-flex items-center text-pizarra font-bold text-sm hover:text-pompeyano transition border-t border-gray-100 pt-3 w-full group-hover:text-dorado">
+                            <span className="mr-2"><Icon path={Icons.Camera} size={18}/></span> Ver Galería del Evento
+                        </a>
                     </div>
                 </div>
             );
 
-            return (
-                <div className="fade-in max-w-4xl mx-auto">
-                    <SectionHeader title="FASTI" subtitle="Agenda de la Asociación" />
-
-                    <section className="mb-16">
-                        <h2 className="font-display text-2xl font-bold text-pizarra mb-8 flex items-center">
-                            <span className="w-8 h-1 bg-dorado mr-4"></span> PROXIMA EVENTA
-                        </h2>
-                        {future.length > 0 ? (
-                            <div className="space-y-4">
-                                {future.map(evt => <EventCard key={evt.id} event={evt} />)}
-                            </div>
-                        ) : (
-                            <div className="bg-gray-50 p-8 text-center border-2 border-dashed border-gray-300 rounded-sm">
-                                <p className="font-serif italic text-gray-500">"Silentium est in Fastis"</p>
-                                <p className="text-sm text-gray-400 mt-2">No hay eventos próximos programados.</p>
-                            </div>
-                        )}
-                    </section>
-
-                    <section>
-                        <h2 className="font-display text-2xl font-bold text-pizarra mb-8 flex items-center">
-                            <span className="w-8 h-1 bg-dorado mr-4"></span> ACTA PRAETERITA
-                        </h2>
-                        <div className="space-y-4">
-                            {past.map(evt => <EventCard key={evt.id} event={evt} />)}
-                        </div>
-                    </section>
-                </div>
-            );
-        };
-
-        const PageTabularium = ({ data }) => {
-            usePageTitle("Tabularium");
             return (
                 <div className="fade-in">
-                    <SectionHeader title="TABULARIUM" subtitle="Investigación y Divulgación" />
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {data.tabularium.map(article => (
-                            <article key={article.id} className="bg-white rounded-sm overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group flex flex-col h-full">
-                                <div className="h-48 overflow-hidden relative">
-                                    <img src={article.img} className="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="" loading="lazy"/>
-                                    <div className="absolute top-0 right-0 bg-pompeyano text-white text-xs px-3 py-1 font-display tracking-widest">{article.category}</div>
-                                </div>
-                                <div className="p-6 flex flex-col flex-grow">
-                                    <h3 className="font-display text-lg font-bold text-pizarra mb-3 leading-tight group-hover:text-pompeyano transition-colors">{article.title}</h3>
-                                    <p className="text-gray-600 text-sm mb-6 flex-grow line-clamp-3 leading-relaxed">{article.summary}</p>
-                                    <a href={`#article?id=${article.id}`} className="inline-flex items-center justify-center w-full py-2 border border-pizarra text-pizarra font-display text-xs font-bold hover:bg-pizarra hover:text-pergamino transition uppercase tracking-widest mt-auto">
-                                        Leer Artículo
-                                    </a>
-                                </div>
-                            </article>
-                        ))}
+                    <SectionHeader title="FASTI" subtitle="Calendario y Eventos" />
+                    
+                    <SectionTitle subtitle="Próximas Actividades">PROXIMA EVENTA</SectionTitle>
+                    <div className="max-w-4xl mx-auto mb-16 px-4">
+                        {future.length > 0 ? (
+                            <div className="relative border-l-4 border-pompeyano/30 ml-4 md:ml-12 space-y-8 pb-12">
+                                {future.map((event, idx) => <EventCard key={event.id} event={event} />)}
+                            </div>
+                        ) : (
+                            <div className="bg-white/60 p-12 rounded-xl shadow-inner border-2 border-gray-200 text-center border-double border-4 border-pompeyano/20">
+                                 <h3 className="font-cinzel text-2xl font-bold text-pompeyano mb-2 italic">"Silentium est in Fastis"</h3>
+                                 <p className="text-gray-600 italic font-merriweather">Actualmente no hay eventos programados en el calendario.</p>
+                            </div>
+                        )}
+                    </div>
+
+                    <SectionTitle subtitle="actividades pasadas">ACTA PRAETERITA</SectionTitle>
+                    <div className="max-w-4xl mx-auto px-4 relative border-l-4 border-pompeyano/30 ml-4 md:ml-12 space-y-8 pb-12">
+                        {past.length > 0 ? (
+                            past.map((event, idx) => <EventCard key={event.id} event={event} />)
+                        ) : (
+                            <p className="text-center text-gray-500 italic">No hay registros pasados disponibles.</p>
+                        )}
                     </div>
                 </div>
             );
         };
 
-        const PageArticle = ({ id, data }) => {
-            const article = useMemo(() => data.tabularium.find(a => a.id == id), [id, data]);
-            usePageTitle(article?.title);
-
-            if (!article) return <div className="text-center py-20 font-serif italic text-gray-500">Documento no encontrado en los archivos.</div>;
-
-            return (
-                <article className="fade-in max-w-3xl mx-auto bg-white p-8 md:p-16 rounded-sm shadow-2xl relative my-8">
-                    <a href="#tabularium" className="inline-flex items-center text-pompeyano font-bold mb-8 hover:underline text-sm uppercase tracking-widest">
-                        <Icon path={Icons.ArrowLeft} size={16} className="mr-2"/> Volver al Archivo
-                    </a>
-                    
-                    <header className="mb-10 text-center">
-                        <div className="inline-block border-b-2 border-dorado mb-4 pb-1 text-dorado font-display text-xs uppercase tracking-[0.2em]">{article.category}</div>
-                        <h1 className="font-display text-3xl md:text-4xl font-bold text-pizarra mb-6 leading-tight">{article.title}</h1>
-                        <div className="flex justify-center items-center text-sm text-gray-500 font-serif italic">
-                            <span>{article.author}</span>
-                            <span className="mx-2">•</span>
-                            <span>{article.date}</span>
-                        </div>
-                    </header>
-
-                    <div className="mb-10 -mx-8 md:-mx-16 shadow-inner">
-                        <img src={article.img} className="w-full h-auto max-h-[500px] object-cover" alt="" />
-                    </div>
-                    
-                    <div className="prose prose-lg max-w-none font-serif text-gray-800">
-                        <p className="text-xl leading-relaxed italic text-gray-600 border-l-4 border-pompeyano pl-6 mb-10">
-                            {article.intro}
-                        </p>
-                        
-                        {article.sections.map((sec, i) => (
-                            <section key={i} className="mb-10">
-                                <h2 className="font-display text-2xl font-bold text-pizarra mt-8 mb-4">{sec.title}</h2>
-                                <p className="text-reading text-gray-700">{sec.content}</p>
-                                {sec.image && (
-                                    <figure className="my-8">
-                                        <img src={sec.image} alt="" className="w-full rounded-sm shadow-md" loading="lazy" />
-                                        {sec.caption && <figcaption className="text-center text-xs text-gray-500 mt-2 italic">{sec.caption}</figcaption>}
-                                    </figure>
-                                )}
-                            </section>
-                        ))}
-                    </div>
-
-                    {article.bibliography && article.bibliography.length > 0 && (
-                        <footer className="mt-16 pt-8 border-t border-gray-200">
-                            <h3 className="font-display text-lg font-bold text-gray-400 mb-6 uppercase tracking-widest">Fontes et Bibliographia</h3>
-                            <ul className="text-sm text-gray-600 font-serif space-y-3">
-                                {article.bibliography.map((ref, i) => (
-                                    // NO USAMOS DANGEROUSLYSETINNERHTML AQUÍ POR SEGURIDAD. 
-                                    // Si el JSON contiene HTML (italicas), deberíamos parsearlo o usar Markdown ligero.
-                                    // Aquí asumimos texto plano para seguridad en esta demo.
-                                    <li key={i} className="biblio-item pl-6 -indent-6">
-                                        {ref.replace(/<[^>]*>?/gm, '')} {/* Strip tags simple para seguridad */}
-                                    </li>
-                                ))}
-                            </ul>
-                        </footer>
-                    )}
-                </article>
-            );
-        };
-
-        const PageImagina = ({ data }) => {
-            usePageTitle("Imagina");
-            // Nota: Para una galería real, usar una librería como "react-image-lightbox" sería mejor, 
-            // pero mantenemos la implementación custom para no añadir dependencias externas.
-            // (Código simplificado para el ejemplo)
-            
-            return (
-                <div className="fade-in text-center py-20">
-                    <SectionHeader title="IMAGINA" subtitle="Galería Fotográfica" />
-                    <p className="text-gray-600 italic">Módulo de galería optimizado (Simplificado para esta revisión).</p>
-                    {/* Aquí iría la lógica de galería del código original, que estaba correcta en lógica pero pesada en DOM */}
-                </div>
-            );
-        };
-
-        // --- APP SHELL ---
-
-        const Navigation = ({ activePage, onNavigate }) => {
-            const [isOpen, setIsOpen] = useState(false);
-            
-            const links = [
-                { id: 'home', label: 'Domus' },
-                { id: 'nostri', label: 'Nostri' },
-                { id: 'fasti', label: 'Fasti' },
-                { id: 'tabularium', label: 'Tabularium' },
-                { id: 'imagina', label: 'Imagina' },
-            ];
-
-            return (
-                <header className="sticky top-0 z-40 bg-pergamino/95 backdrop-blur-sm shadow-md border-b border-dorado/30 transition-all">
-                    <div className="container mx-auto px-4 h-16 md:h-20 flex justify-between items-center">
-                        <a href="#home" className="flex items-center group">
-                            {/* Logo fallback text si la imagen falla */}
-                            <span className="font-display font-bold text-2xl text-pompeyano tracking-widest group-hover:text-dorado transition">IBIDEM</span>
-                        </a>
-                        
-                        {/* Desktop Nav */}
-                        <nav className="hidden md:flex space-x-8">
-                            {links.map(link => (
-                                <a 
-                                    key={link.id}
-                                    href={`#${link.id}`}
-                                    className={`font-display text-sm font-bold tracking-widest transition-colors py-2 border-b-2 ${activePage === link.id ? 'text-pompeyano border-pompeyano' : 'text-pizarra border-transparent hover:text-dorado'}`}
-                                >
-                                    {link.label}
+        const PageTabularium = ({ data }) => (
+            <div className="fade-in">
+                <SectionHeader title="TABULARIUM" subtitle="Archivo Académico" />
+                <div className="grid md:grid-cols-2 gap-8">
+                    {data.tabularium.map(article => (
+                        <article key={article.id} className="bg-white rounded-lg overflow-hidden shadow-lg flex flex-col hover:shadow-2xl transition-shadow duration-300">
+                            <div className="h-48 overflow-hidden">
+                                <img src={article.img} className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" alt={article.title} loading="lazy" />
+                            </div>
+                            <div className="p-6 flex-grow flex flex-col">
+                                <span className="text-xs font-cinzel text-dorado uppercase mb-2 tracking-widest">{article.category}</span>
+                                <h3 className="font-cinzel text-xl font-bold text-pompeyano mb-3 leading-tight">{article.title}</h3>
+                                <p className="text-gray-600 text-sm mb-4 flex-grow text-reading line-clamp-3">{article.summary}</p>
+                                <a href={`#article?id=${article.id}`} className="text-pompeyano font-bold text-sm mt-auto hover:text-dorado flex items-center">
+                                    Leer Artículo <span className="ml-1">&rarr;</span>
                                 </a>
-                            ))}
-                        </nav>
-                        
-                        {/* Mobile Toggle */}
-                        <button 
-                            className="md:hidden text-pizarra hover:text-pompeyano p-2" 
-                            onClick={() => setIsOpen(!isOpen)}
-                            aria-label="Menú"
-                        >
-                            <Icon path={isOpen ? Icons.X : Icons.Menu} size={28} />
-                        </button>
-                    </div>
-
-                    {/* Mobile Nav */}
-                    {isOpen && (
-                        <nav className="md:hidden bg-pizarra text-pergamino absolute top-full left-0 w-full shadow-xl border-t border-dorado">
-                            {links.map(link => (
-                                <a 
-                                    key={link.id}
-                                    href={`#${link.id}`}
-                                    onClick={() => setIsOpen(false)}
-                                    className="block px-6 py-4 font-display font-bold tracking-widest border-b border-gray-700 hover:bg-gray-800 hover:text-dorado"
-                                >
-                                    {link.label}
-                                </a>
-                            ))}
-                        </nav>
-                    )}
-                </header>
-            );
-        };
-
-        const Footer = ({ data }) => (
-            <footer className="bg-pizarra text-pergamino py-12 border-t-8 border-pompeyano mt-auto relative z-20">
-                <div className="container mx-auto px-4 text-center">
-                    <div className="mb-8">
-                        <h3 className="font-display text-3xl font-bold text-dorado mb-2">IBIDEM</h3>
-                        <p className="font-serif italic text-xs text-gray-400">Reconstrucción Histórica Civil</p>
-                    </div>
-                    
-                    <div className="flex justify-center space-x-8 mb-8">
-                        {data?.general?.facebook && <a href={data.general.facebook} target="_blank" rel="noopener" className="hover:text-dorado transition font-display text-xs border-b border-transparent hover:border-dorado">FACEBOOK</a>}
-                        {data?.general?.instagram && <a href={data.general.instagram} target="_blank" rel="noopener" className="hover:text-dorado transition font-display text-xs border-b border-transparent hover:border-dorado">INSTAGRAM</a>}
-                        <a href={`mailto:${data?.general?.email}`} className="hover:text-dorado transition font-display text-xs border-b border-transparent hover:border-dorado">EMAIL</a>
-                    </div>
-
-                    <div className="text-[10px] uppercase tracking-widest text-gray-500 font-display space-x-4">
-                        <span>&copy; 2025 Ibidem</span>
-                        <span>•</span>
-                        <button className="hover:text-white transition">Privacidad</button>
-                    </div>
+                            </div>
+                        </article>
+                    ))}
                 </div>
-            </footer>
+            </div>
         );
 
-        const App = () => {
-            const [data, setData] = useState(null);
-            const [error, setError] = useState(null);
-            const [route, setRoute] = useState({ page: 'home', params: {} });
+        const PageArticle = ({ id, data }) => {
+            const article = data.tabularium.find(a => a.id == id);
+            
+            // Efecto para scroll al top al entrar
+            useEffect(() => { window.scrollTo(0,0); }, [id]);
 
-            // Carga de datos
-            useEffect(() => {
-                const loadData = async () => {
-                    try {
-                        const res = await fetch('./datos.json');
-                        if (!res.ok) throw new Error("Error al cargar datos");
-                        const json = await res.json();
-                        setData(json);
-                        document.getElementById('loader').style.opacity = '0';
-                        setTimeout(() => document.getElementById('loader').remove(), 500);
-                    } catch (err) {
-                        setError(err.message);
-                        document.getElementById('loader').remove();
-                    }
-                };
-                loadData();
-            }, []);
+            if (!article) return <div className="text-center py-20 text-pompeyano font-cinzel text-xl">Artículo no encontrado en los archivos.</div>;
+            
+            return (
+                <div className="fade-in max-w-3xl mx-auto bg-white p-6 md:p-12 rounded-xl shadow-2xl my-8">
+                    <a href="#tabularium" className="flex items-center text-pompeyano font-bold mb-6 hover:text-dorado transition"><span className="mr-2"><Icon path={Icons.ArrowLeft}/></span> Volver al Tabularium</a>
+                    
+                    <div className="mb-8 border-b border-dorado pb-4 text-center md:text-left">
+                        <span className="text-xs font-cinzel text-dorado uppercase tracking-widest mb-2 block">{article.category}</span>
+                        <h1 className="font-cinzel text-2xl md:text-3xl font-bold text-pizarra mb-2 leading-tight">{article.title}</h1>
+                        <p className="text-gray-500 italic text-sm">Por {article.author} | {article.date}</p>
+                    </div>
 
-            // Routing simple
-            useEffect(() => {
-                const handleHash = () => {
-                    const hash = window.location.hash.substring(1) || 'home';
-                    const [page, query] = hash.split('?');
-                    const params = {};
-                    if (query) {
-                        query.split('&').forEach(pair => {
-                            const [k, v] = pair.split('=');
-                            params[k] = decodeURIComponent(v);
-                        });
-                    }
-                    setRoute({ page, params });
-                    window.scrollTo(0, 0);
-                };
-                
-                window.addEventListener('hashchange', handleHash);
-                handleHash();
-                return () => window.removeEventListener('hashchange', handleHash);
-            }, []);
+                    <img src={article.img} className="w-full rounded-lg mb-10 shadow-md" alt="Portada" />
+                    
+                    <p className="text-lg text-gray-800 mb-10 border-l-4 border-pompeyano pl-4 font-merriweather text-reading italic bg-gray-50 p-4 rounded-r">
+                        {article.intro}
+                    </p>
+                    
+                    {article.sections.map((sec, i) => (
+                        <div key={i} className="mb-8">
+                            <h2 className="font-cinzel text-xl font-bold text-pompeyano mb-3 border-b border-gray-200 pb-1">{sec.title}</h2>
+                            <p className="text-gray-700 leading-relaxed text-reading mb-4">{sec.content}</p>
+                            
+                            {sec.image && (
+                                <div className="my-6">
+                                    <img src={sec.image} alt={`Ilustración ${i}`} className="w-full h-auto rounded-lg shadow-sm border border-gray-200" loading="lazy" />
+                                    {sec.caption && <p className="text-xs text-gray-500 text-center mt-2 italic">{sec.caption}</p>}
+                                </div>
+                            )}
+                        </div>
+                    ))}
 
-            if (error) return (
-                <div className="flex h-screen items-center justify-center bg-pergamino text-pompeyano flex-col p-4 text-center">
-                    <Icon path={Icons.X} size={48} className="mb-4"/>
-                    <h2 className="font-display text-2xl font-bold">Error Crítico</h2>
-                    <p className="font-serif mt-2">{error}</p>
+                    {/* BIBLIOGRAFÍA SANITIZADA (Simulada para mantener formato pero avisar riesgo) */}
+                    {article.bibliography && article.bibliography.length > 0 && (
+                        <div className="mt-12 pt-8 border-t-2 border-gray-200 bg-gray-50 p-6 rounded-lg">
+                            <h3 className="font-cinzel text-lg font-bold text-pizarra mb-4 flex items-center">
+                                <span className="mr-2"><Icon path={Icons.BookOpen} size={20}/></span> FONTES ET BIBLIOGRAPHIA
+                            </h3>
+                            <ul className="text-sm text-gray-700 font-merriweather">
+                                {article.bibliography.map((ref, i) => (
+                                    // Usamos dangerouslySetInnerHTML para permitir cursivas (<i>) en citas bibliográficas
+                                    // PERO confiamos en que el JSON datos.json es seguro porque lo controlas tú.
+                                    <li key={i} className="biblio-item" dangerouslySetInnerHTML={{__html: ref}}></li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
             );
+        };
 
-            if (!data) return null; // El loader HTML se encarga de esto
+        // --- COMPONENTE GALERÍA (RESTAURADO COMPLETO) ---
+        const PageImagina = ({ albumId, data }) => {
+            const [selectedAlbum, setSelectedAlbum] = useState(null);
+            const [lightboxIndex, setLightboxIndex] = useState(-1);
 
-            let Content;
-            switch(route.page) {
-                case 'nostri': Content = <PageNostri data={data} />; break;
-                case 'fasti': Content = <PageFasti data={data} />; break;
-                case 'tabularium': Content = <PageTabularium data={data} />; break;
-                case 'article': Content = <PageArticle id={route.params.id} data={data} />; break;
-                case 'imagina': Content = <PageImagina data={data} />; break;
-                default: Content = <PageHome data={data} />;
+            // Cargar álbum si viene por URL
+            useEffect(() => {
+                if (albumId && data.imagina) {
+                    const found = data.imagina.find(a => a.id == albumId);
+                    if (found) setSelectedAlbum(found);
+                    else setSelectedAlbum(null); // Si el ID no existe, mostrar lista
+                } else {
+                    setSelectedAlbum(null);
+                }
+            }, [albumId, data]);
+
+            // Scroll al thumbnail activo
+            useEffect(() => {
+                if (lightboxIndex >= 0) {
+                    const thumb = document.getElementById(`thumb-${lightboxIndex}`);
+                    if (thumb) {
+                        thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
+                    // Bloquear scroll del body
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = 'auto';
+                }
+                return () => { document.body.style.overflow = 'auto'; }
+            }, [lightboxIndex]);
+
+            // VISTA LISTA DE ÁLBUMES
+            if (!selectedAlbum) {
+                return (
+                    <div className="fade-in">
+                        <SectionHeader title="IMAGINA" subtitle="Galería Fotográfica" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {data.imagina && data.imagina.map((album, idx) => (
+                                <a key={idx} href={`#imagina?id=${album.id}`} className="block bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 transition group">
+                                    <div className="h-48 overflow-hidden relative">
+                                        <img src={album.coverImage} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="Album" loading="lazy" />
+                                        <div className="absolute inset-0 bg-pompeyano/80 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition duration-300 font-cinzel font-bold tracking-widest">
+                                            VER ÁLBUM
+                                        </div>
+                                    </div>
+                                    <div className="p-4 text-center border-b-4 border-dorado">
+                                        <h3 className="font-cinzel text-lg font-bold text-pompeyano truncate mb-2">{album.eventTitle}</h3>
+                                        {album.location && (
+                                            <div className="text-sm mb-2">
+                                                <p className="font-merriweather text-pizarra font-bold uppercase text-xs">{album.location.locality}</p>
+                                                <p className="font-merriweather text-gray-600 italic text-xs">{album.location.place}</p>
+                                            </div>
+                                        )}
+                                        <p className="text-xs text-dorado lowercase font-cinzel">{album.date}</p>
+                                        <p className="text-xs text-gray-400 mt-2 uppercase tracking-widest">{album.images ? album.images.length : 0} FOTOS</p>
+                                    </div>
+                                </a>
+                            ))}
+                            {(!data.imagina || data.imagina.length === 0) && (
+                                <div className="col-span-3 text-center py-10">
+                                    <p className="text-gray-500 italic font-merriweather">No hay álbumes fotográficos disponibles actualmente.</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
             }
+            
+            // VISTA DETALLE ÁLBUM
+            const currentImg = lightboxIndex >= 0 ? selectedAlbum.images[lightboxIndex] : null;
+
+            return (
+                <div>
+                    <div className="fade-in">
+                        <a href="#imagina" onClick={(e) => {if(!albumId) {e.preventDefault(); setSelectedAlbum(null);}}} className="flex items-center text-pompeyano font-bold mb-6 hover:text-dorado transition"><span className="mr-2"><Icon path={Icons.ArrowLeft}/></span> Volver a Álbumes</a>
+                        <SectionHeader title={selectedAlbum.eventTitle} subtitle={selectedAlbum.date} />
+                        
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            {selectedAlbum.images.map((img, idx) => (
+                                <div key={idx} className="cursor-pointer aspect-square overflow-hidden rounded-lg shadow-md hover:opacity-90 transition relative group border-2 border-transparent hover:border-dorado" onClick={() => setLightboxIndex(idx)}>
+                                    <img src={img.src} alt="Foto" className="w-full h-full object-cover" loading="lazy" />
+                                    <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded font-cinzel pointer-events-none">
+                                        {idx + 1} / {selectedAlbum.images.length}
+                                    </div>
+                                    <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition"></div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        {selectedAlbum.images.length === 0 && <p className="text-center italic text-gray-500">Este álbum aún no tiene fotos.</p>}
+                    </div>
+
+                    {/* LIGHTBOX MODAL */}
+                    {lightboxIndex >= 0 && currentImg && (
+                        <div className="fixed inset-0 bg-black/95 flex flex-col justify-between z-[99999]" onClick={() => setLightboxIndex(-1)}>
+                            <button className="absolute top-4 right-4 text-white p-2 hover:text-dorado transition z-[100000]"><Icon path={Icons.X} size={32}/></button>
+                            
+                            {/* Área Principal Imagen */}
+                            <div className="flex-grow flex items-center justify-center p-4 overflow-hidden relative w-full h-full">
+                                {/* Navegación flechas */}
+                                <button 
+                                    className="absolute left-4 text-white hover:text-dorado p-4 z-50 bg-black/20 rounded-full hover:bg-black/50 transition"
+                                    onClick={(e) => { e.stopPropagation(); setLightboxIndex(prev => prev > 0 ? prev - 1 : selectedAlbum.images.length - 1); }}
+                                >
+                                    <Icon path={Icons.ChevronLeft} size={32} />
+                                </button>
+                                
+                                <img src={currentImg.src} className="max-w-full max-h-[75vh] shadow-2xl border border-pizarra/50 object-contain rounded-sm" onClick={e => e.stopPropagation()} />
+
+                                <button 
+                                    className="absolute right-4 text-white hover:text-dorado p-4 z-50 bg-black/20 rounded-full hover:bg-black/50 transition"
+                                    onClick={(e) => { e.stopPropagation(); setLightboxIndex(prev => prev < selectedAlbum.images.length - 1 ? prev + 1 : 0); }}
+                                >
+                                    <Icon path={Icons.ChevronRight} size={32} />
+                                </button>
+                            </div>
+
+                            {/* Panel inferior info + thumbnails */}
+                            <div className="w-full bg-black/90 flex flex-col pt-2 pb-4 border-t border-gray-800" onClick={e => e.stopPropagation()}>
+                                <div className="px-4 mb-3 flex flex-col items-center">
+                                    <span className="text-dorado text-xs font-cinzel mb-1 tracking-widest">{lightboxIndex + 1} DE {selectedAlbum.images.length}</span>
+                                    {currentImg.caption && (
+                                        <p className="text-pergamino text-sm italic font-merriweather text-center opacity-90 max-w-2xl">
+                                            {currentImg.caption}
+                                        </p>
+                                    )}
+                                </div>
+
+                                <div className="flex items-center space-x-2 overflow-x-auto px-4 py-2 scrollbar-hide h-20 md:h-24 justify-center md:justify-start">
+                                    {selectedAlbum.images.map((img, idx) => (
+                                        <div 
+                                            key={idx} 
+                                            id={`thumb-${idx}`}
+                                            className={`flex-shrink-0 cursor-pointer transition-all duration-300 ${idx === lightboxIndex ? 'border-2 border-dorado scale-105 opacity-100' : 'border border-transparent opacity-40 hover:opacity-80'}`}
+                                            onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx); }}
+                                        >
+                                            <img src={img.src} className="h-16 md:h-20 w-auto object-cover rounded-sm" alt="miniatura" loading="lazy" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // --- COMPONENTE MODAL LEGAL (Mismo que original) ---
+        const ModalLegal = ({ type, onClose }) => {
+            if (!type) return null;
+            
+            return (
+                <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[10000] p-4 fade-in" onClick={onClose}>
+                    <div className="bg-white p-6 md:p-10 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border-4 border-double border-pompeyano" onClick={e => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-6 border-b border-dorado pb-2">
+                            <h2 className="font-cinzel text-2xl font-bold text-pompeyano">
+                                {type === 'legal' ? 'AVISO LEGAL' : 'ACCESIBILIDAD'}
+                            </h2>
+                            <button onClick={onClose} className="text-pizarra hover:text-pompeyano"><Icon path={Icons.X} size={24}/></button>
+                        </div>
+                        
+                        <div className="text-gray-700 font-merriweather text-sm leading-relaxed space-y-4 text-reading">
+                            {type === 'legal' ? (
+                                <React.Fragment>
+                                    <p><strong>Titularidad:</strong> Este sitio web es propiedad de la <strong>Asociación de Recreación Histórica IBIDEM</strong>.</p>
+                                    <p><strong>Finalidad:</strong> La web tiene como único objetivo la divulgación histórica y cultural sobre la vida civil en la antigua Roma. No tiene fines comerciales directos.</p>
+                                    <p><strong>Propiedad Intelectual:</strong> Todos los contenidos (textos, fotografías e investigaciones) son propiedad intelectual de la Asociación Ibidem o se utilizan bajo licencias que permiten su uso no comercial. Queda prohibida la reproducción total o parcial sin autorización expresa.</p>
+                                    <p><strong>Responsabilidad:</strong> La asociación no se hace responsable del uso indebido de los contenidos aquí expuestos.</p>
+                                </React.Fragment>
+                            ) : (
+                                <React.Fragment>
+                                    <p>En <strong>Ibidem</strong>, estamos comprometidos con hacer nuestra historia accesible para todos.</p>
+                                    <p>Trabajamos continuamente para mejorar la experiencia de usuario y aplicar los estándares de accesibilidad web pertinentes (WCAG 2.1), incluyendo:</p>
+                                    <ul className="list-disc pl-5 space-y-2 mt-2">
+                                        <li>Uso de textos alternativos en las imágenes para lectores de pantalla.</li>
+                                        <li>Contraste de color adecuado para facilitar la lectura.</li>
+                                        <li>Navegación clara y estructura semántica.</li>
+                                        <li>Diseño adaptable a dispositivos móviles.</li>
+                                    </ul>
+                                    <p className="mt-4">Si encuentras alguna barrera de acceso, por favor contáctanos en <a href="mailto:ibidemrecreacion@gmail.com" className="text-pompeyano underline">ibidemrecreacion@gmail.com</a>.</p>
+                                </React.Fragment>
+                            )}
+                        </div>
+                        
+                        <button onClick={onClose} className="mt-8 w-full bg-pompeyano text-white py-2 rounded hover:bg-pizarra transition font-cinzel tracking-widest">CERRAR</button>
+                    </div>
+                </div>
+            );
+        };
+
+        // ================= APP PRINCIPAL =================
+
+        const App = () => {
+            const [route, setRoute] = useState({ page: 'home', params: {} });
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const [data, setData] = useState(null);
+            const [legalModal, setLegalModal] = useState(null);
+
+            // Fetch de datos con manejo de errores robusto
+            useEffect(() => {
+                fetch('./datos.json')
+                    .then(response => {
+                        if (!response.ok) throw new Error("No se pudo cargar el archivo de datos (datos.json)");
+                        return response.json();
+                    })
+                    .then(jsonData => {
+                        setData(jsonData);
+                        const loader = document.getElementById('loader');
+                        if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 500); }
+                    })
+                    .catch(err => {
+                        console.error("Error cargando datos:", err);
+                        const loader = document.getElementById('loader');
+                        if(loader) loader.style.display = 'none';
+                        
+                        const errorScreen = document.getElementById('error-screen');
+                        const errorMsg = document.getElementById('technical-error');
+                        if(errorScreen) errorScreen.style.display = 'flex';
+                        if(errorMsg) errorMsg.innerText = `Detalle técnico: ${err.message}`;
+                    });
+            }, []);
+
+            // Routing
+            useEffect(() => {
+                const handleHashChange = () => {
+                    const hash = window.location.hash.substring(1) || 'home';
+                    const [pagePart, queryPart] = hash.split('?');
+                    const params = {};
+                    if (queryPart) queryPart.split('&').forEach(pair => { const [k, v] = pair.split('='); params[k] = v; });
+                    
+                    setRoute({ page: pagePart, params });
+                    window.scrollTo(0, 0);
+                    setMobileMenuOpen(false);
+                };
+                window.addEventListener('hashchange', handleHashChange);
+                handleHashChange(); 
+                return () => window.removeEventListener('hashchange', handleHashChange);
+            }, []);
+
+            // Titulo dinámico de pestaña
+            useEffect(() => {
+                const titles = { home: 'Inicio', nostri: 'Nostri', fasti: 'Fasti', tabularium: 'Tabularium', imagina: 'Imagina' };
+                document.title = `${titles[route.page] || 'Ibidem'} | Recreación Histórica`;
+            }, [route.page]);
+
+            const NavItem = ({ to, label }) => {
+                const isActive = route.page === to;
+                return (
+                    <a href={`#${to}`} className={`font-cinzel font-semibold transition tracking-wider ${isActive ? 'text-pompeyano border-b-2 border-pompeyano' : 'text-pizarra hover:text-pompeyano'}`}>{label}</a>
+                );
+            };
+
+            const MobileNavItem = ({ to, label }) => (
+                <a href={`#${to}`} className="block px-4 py-3 text-white border-b border-white/10 hover:bg-black/20 font-cinzel tracking-widest">{label}</a>
+            );
+
+            if (!data) return null; // El loader HTML maneja esto
+
+            let Content = <PageHome data={data} />;
+            if (route.page === 'nostri') Content = <PageNostri data={data} />;
+            if (route.page === 'fasti') Content = <PageFasti data={data} />;
+            if (route.page === 'tabularium') Content = <PageTabularium data={data} />;
+            if (route.page === 'article') Content = <PageArticle id={route.params.id} data={data} />;
+            if (route.page === 'imagina') Content = <PageImagina albumId={route.params.id} data={data} />;
 
             return (
                 <div className="flex flex-col min-h-screen">
-                    <Navigation activePage={route.page} />
-                    <main className="flex-grow container mx-auto px-4 py-8 md:py-12 relative z-10">
+                    <header className="sticky top-0 z-40 bg-pergamino/95 backdrop-blur-sm shadow-lg border-b border-dorado/30 transition-all">
+                        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+                            <a href="#home" className="flex items-center group">
+                                <img src={data.general.logoUrl} alt="Ibidem Logo" className="h-10 md:h-12 w-auto group-hover:scale-105 transition" />
+                            </a>
+                            
+                            <nav className="hidden md:flex space-x-8">
+                                <NavItem to="home" label="DOMUS" />
+                                <NavItem to="nostri" label="NOSTRI" />
+                                <NavItem to="fasti" label="FASTI" />
+                                <NavItem to="imagina" label="IMAGINA" />
+                                <NavItem to="tabularium" label="TABULARIUM" />
+                            </nav>
+                            
+                            <button className="md:hidden text-pompeyano p-2 hover:bg-pompeyano/10 rounded transition" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                                <Icon path={mobileMenuOpen ? Icons.X : Icons.Menu} size={28} />
+                            </button>
+                        </div>
+                        
+                        {mobileMenuOpen && (
+                            <div className="md:hidden bg-pompeyano shadow-inner fade-in border-t border-white/20">
+                                <MobileNavItem to="home" label="DOMUS" />
+                                <MobileNavItem to="nostri" label="NOSTRI" />
+                                <MobileNavItem to="fasti" label="FASTI" />
+                                <MobileNavItem to="imagina" label="IMAGINA" />
+                                <MobileNavItem to="tabularium" label="TABULARIUM" />
+                            </div>
+                        )}
+                    </header>
+
+                    <main className="flex-grow container mx-auto px-4 py-8 md:py-12 bg-transparent relative z-10">
                         {Content}
                     </main>
-                    <Footer data={data} />
+
+                    <footer className="bg-pizarra text-pergamino py-10 border-t-4 border-dorado mt-auto relative z-20">
+                        <div className="container mx-auto px-4 text-center">
+                            <h3 className="font-cinzel text-2xl font-bold text-dorado mb-4 tracking-widest">CONTACTUS</h3>
+                            
+                            <div className="flex justify-center items-center mb-6">
+                                <Icon path={Icons.Mail} size={20} className="mr-2 text-pergamino" />
+                                <a href={`mailto:${data.general.email}`} className="text-pergamino hover:text-dorado transition font-merriweather">{data.general.email}</a>
+                            </div>
+
+                            <div className="flex justify-center space-x-8 mb-8">
+                                <a href={data.general.facebook} target="_blank" className="hover:text-dorado hover:scale-110 transition group" aria-label="Facebook">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-pergamino group-hover:text-dorado transition">
+                                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                                    </svg>
+                                </a>
+                                <a href={data.general.instagram} target="_blank" className="hover:text-dorado hover:scale-110 transition group" aria-label="Instagram">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pergamino group-hover:text-dorado transition">
+                                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                                    </svg>
+                                </a>
+                            </div>
+
+                            <p className="font-merriweather text-xs opacity-50 mb-4">&copy; 2025 Ibidem. Recreación Histórica.</p>
+                            
+                            <div className="flex justify-center space-x-4 text-[10px] uppercase tracking-widest text-gray-500 font-cinzel">
+                                <button onClick={() => setLegalModal('legal')} className="hover:text-dorado border-b border-transparent hover:border-dorado transition">Aviso Legal</button>
+                                <span>|</span>
+                                <button onClick={() => setLegalModal('accesibilidad')} className="hover:text-dorado border-b border-transparent hover:border-dorado transition">Accesibilidad</button>
+                            </div>
+                        </div>
+                    </footer>
+                    
+                    <ModalLegal type={legalModal} onClose={() => setLegalModal(null)} />
                 </div>
             );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
+
     </script>
 </body>
 </html>
+
 
