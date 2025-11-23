@@ -37,7 +37,8 @@
       "sections": [
         {
           "title": "1. Olvida los músculos, eran los «hombres de cebada»",
-          "content": "Lejos de las dietas ricas en proteínas que esperaríamos de un atleta de élite, los gladiadores tenían una alimentación muy específica basada principalmente en carbohidratos. Sus comidas consistían en granos, sobre todo cebada, y legumbres como las habas. Esta dependencia de los cereales era tan marcada que se ganaron el apodo revelador de «hordearii» (hombres de cebada). Esta dieta, enfocada en ganar volumen y resistencia en lugar de definición muscular, no era bien vista por las élites romanas. El filósofo Séneca, por ejemplo, los describía de forma despectiva, evidenciando el desprecio que sentía por un físico que no buscaba la perfección, sino la funcionalidad para la arena."
+          "content": "Lejos de las dietas ricas en proteínas que esperaríamos de un atleta de élite, los gladiadores tenían una alimentación muy específica basada principalmente en carbohidratos. Sus comidas consistían en granos, sobre todo cebada, y legumbres como las habas. Esta dependencia de los cereales era tan marcada que se ganaron el apodo revelador de «hordearii» (hombres de cebada). Esta dieta, enfocada en ganar volumen y resistencia en lugar de definición muscular, no era bien vista por las élites romanas. El filósofo Séneca, por ejemplo, los describía de forma despectiva, evidenciando el desprecio que sentía por un físico que no buscaba la perfección, sino la funcionalidad para la arena.",
+          "image": "https://placehold.co/800x400/DAA520/3E2723?text=GRANO+Y+LEGUMBRES"
         },
         {
           "title": "2. La grasa como armadura",
@@ -45,8 +46,14 @@
         },
         {
            "title": "3. El desprecio por el atleta griego",
-           "content": "El físico robusto del gladiador no era un descuido, sino el resultado de un rechazo cultural deliberado al ideal atlético griego. Mientras los griegos veneraban la perfección estética del cuerpo, los romanos veían sus prácticas deportivas con desdén. Consideraban los gimnasios griegos «escuelas de vicios». Incluso Cicerón aprobaba la sentencia: «mostrarse desnudos en público es el comienzo de la corrupción». Para la mentalidad romana, eminentemente práctica, el cuerpo no era una obra de arte que perfeccionar, sino una herramienta para un fin."
+           "content": "El físico robusto del gladiador no era un descuido, sino el resultado de un rechazo cultural deliberado al ideal atlético griego. Mientras los griegos veneraban la perfección estética del cuerpo, los romanos veían sus prácticas deportivas con desdén. Consideraban los gimnasios griegos «escuelas de vicios». Incluso Cicerón aprobaba la sentencia: «mostrarse desnudos en público es el comienzo de la corrupción». Para la mentalidad romana, eminentemente práctica, el cuerpo no era una obra de arte que perfeccionar, sino una herramienta para un fin.",
+           "image": "https://placehold.co/800x400/555555/F5EFE3?text=MOSAICO+GLADIADORES"
         }
+      ],
+      "bibliography": [
+        "JUNKELMANN, Marcus. *Das Spiel mit dem Tod: So kämpften Roms Gladiatoren*. Mainz am Rhein: Philipp von Zabern, 2000.",
+        "MANN, Christian. *Gladiatoren: Das Spiel um Leben und Tod*. München: C.H. Beck, 2011.",
+        "NOSSOV, Konstantin. *Gladiator: Rome’s Bloody Spectacle*. Oxford: Osprey Publishing, 2009."
       ]
     },
     {
@@ -61,6 +68,10 @@
       "sections": [
         { "title": "1. La Expositio", "content": "El cuerpo se lavaba, ungía y exponía en el atrio con los pies hacia la puerta. Se colocaba el óbolo para Caronte en la boca." },
         { "title": "2. La Pompa Funebris", "content": "La procesión hacia el foro era un espectáculo donde los ancestros 'revivían' a través de las máscaras de cera (imagines maiorum) portadas por actores." }
+      ],
+      "bibliography": [
+        "TOYNBEE, J.M.C. *Death and Burial in the Roman World*. Baltimore: Johns Hopkins University Press, 1996.",
+        "HOPE, Valerie M. *Roman Death: The Dying and the Dead in Ancient Rome*. London: Continuum, 2009."
       ]
     }
   ],
