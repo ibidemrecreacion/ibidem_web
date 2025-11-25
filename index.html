@@ -334,9 +334,12 @@
                                     <Icon path={Icons.MapPin} size={14} /> {event.location.place}
                                 </a>
                                 <p className="text-gray-600 mb-4 text-reading text-sm mt-2">{event.desc}</p>
-                                <a href={`#imagina?id=${event.id}`} className="inline-flex items-center text-pizarra font-bold text-sm hover:text-pompeyano transition border-t border-gray-100 pt-3 w-full group-hover:text-dorado-safe">
-                                    <span className="mr-2" aria-hidden="true"><Icon path={Icons.Camera} size={18}/></span> Ver Galería del Evento
-                                </a>
+                                {/* Botón para ir a la galería del evento - SÓLO si tiene imágenes definidas */}
+                                {(event.coverImage || (event.images && event.images.length > 0)) && (
+                                    <a href={`#imagina?id=${event.id}`} className="inline-flex items-center text-pizarra font-bold text-sm hover:text-pompeyano transition border-t border-gray-100 pt-3 w-full group-hover:text-dorado-safe">
+                                        <span className="mr-2" aria-hidden="true"><Icon path={Icons.Camera} size={18}/></span> Ver Galería del Evento
+                                    </a>
+                                )}
                             </div>
 
                             {/* Cambio 2: Imagen de portada (Solo desktop, lado derecho) */}
@@ -458,41 +461,52 @@
             const [lightboxIndex, setLightboxIndex] = useState(-1);
             const [tagFilter, setTagFilter] = useState('TODOS'); 
             
-            // CAMBIO: Lógica para generar galerías automáticamente desde eventos (Fasti)
+            // CAMBIO: Lógica combinada para generar álbumes desde manuales (data.imagina) y Fasti (eventos)
             const enrichedAlbums = useMemo(() => {
-                if (!data.fasti) return [];
+                const manualAlbums = data.imagina || []; // 1. Álbumes Manuales
                 const allEvents = [...(data.fasti.upcoming || []), ...(data.fasti.past || [])];
                 
-                // Mapeamos TODOS los eventos para que sean álbumes potenciales
+                // 2. Álbumes Generados desde Fasti (Eventos)
                 const eventAlbums = allEvents.map(event => {
-                    // Preparamos las imágenes del álbum
+                    // Solo si hay portada o imágenes definidas
+                    if (!event.coverImage && (!event.images || event.images.length === 0)) return null;
+
+                    // Construir la lista de imágenes, asegurando que coverImage es la primera
                     const albumImages = [];
-                    // 1. Si hay coverImage, la añadimos primero (siempre que no esté ya duplicada en images, aunque simplificamos asumiendo que es aparte)
-                    if (event.coverImage) {
-                         albumImages.push({ src: event.coverImage, caption: event.title + " (Portada)" });
-                    }
-                    // 2. Si hay array de imágenes, las añadimos después
-                    if (event.images && Array.isArray(event.images)) {
-                        albumImages.push(...event.images);
+                    
+                    const coverSrc = event.coverImage;
+                    const internalImages = event.images || [];
+
+                    // Agregar la portada solo si existe y no está ya como la primera imagen interna
+                    if (coverSrc) {
+                        // Comprobamos si la portada ya está como la primera imagen interna para evitar duplicados
+                        if (!internalImages[0] || internalImages[0].src !== coverSrc) {
+                            albumImages.push({ src: coverSrc, caption: event.title + " (Portada)" });
+                        }
                     }
 
-                    // Solo devolvemos álbumes si tienen al menos una imagen (portada o galería interna)
-                    if (albumImages.length === 0) return null;
+                    // Agregar las imágenes internas
+                    albumImages.push(...internalImages);
+                    
+                    if (albumImages.length === 0) return null; // Debe tener al menos una imagen
 
                     return { 
                         id: event.id,
                         eventTitle: event.title, 
                         date: event.date, 
-                        coverImage: event.coverImage || (event.images && event.images[0] ? event.images[0].src : ""), 
-                        images: albumImages, // Aquí ya incluye la portada primero
+                        coverImage: coverSrc || (internalImages[0] ? internalImages[0].src : ""), 
+                        images: albumImages, // Lista final de imágenes, con portada la primera
                         location: event.location,
                         tags: event.tags || []
                     };
                 }).filter(album => album !== null); // Filtramos los nulos (eventos sin fotos)
 
-                // Ordenamos por fecha (opcional, pero recomendable para que coincida con Fasti)
-                // Usamos la misma lógica de parseDate pero simplificada para ordenar descendente (más reciente primero)
-                return eventAlbums.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+                // 3. Combinar ambos listados
+                const combinedAlbums = [...manualAlbums, ...eventAlbums];
+
+                // 4. Ordenar por fecha (más reciente primero, descendente)
+                // Asumo que los manualAlbums también tienen una propiedad 'date'
+                return combinedAlbums.sort((a, b) => parseDate(b.date) - parseDate(a.date));
 
             }, [data]);
 
@@ -607,7 +621,7 @@
                         )}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mx-2 md:mx-auto">
                             {filteredAlbums.map((album, idx) => (
-                                <a key={idx} href={`#imagina?id=${album.id}`} className="block bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 transition group focus:outline-none focus:ring-4 focus:ring-pompeyano">
+                                <a key={album.id || idx} href={`#imagina?id=${album.id}`} className="block bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-1 transition group focus:outline-none focus:ring-4 focus:ring-pompeyano">
                                     <div className="h-48 overflow-hidden relative">
                                         <img src={album.coverImage} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt={`Portada del álbum: ${album.eventTitle}`} loading="lazy" />
                                         <div className="absolute inset-0 bg-pompeyano/80 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition duration-300 font-cinzel font-bold tracking-widest">VER ÁLBUM</div>
@@ -636,7 +650,7 @@
                         {/* Ajuste de columnas para mobile: 1 columna, luego 2, luego 3 */}
                         <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
                             {selectedAlbum.images.map((img, idx) => (
-                                <button key={idx} type="button" className="w-full break-inside-avoid cursor-pointer rounded-lg shadow-md hover:opacity-90 transition relative group border-2 border-transparent hover:border-dorado focus:border-dorado focus:outline-none" onClick={() => setLightboxIndex(idx)} aria-label={`Ver foto ${idx + 1}`}>
+                                <button key={img.src || idx} type="button" className="w-full break-inside-avoid cursor-pointer rounded-lg shadow-md hover:opacity-90 transition relative group border-2 border-transparent hover:border-dorado focus:border-dorado focus:outline-none" onClick={() => setLightboxIndex(idx)} aria-label={`Ver foto ${idx + 1}`}>
                                     <img src={img.src} alt={img.caption || ""} className="w-full h-auto rounded-lg" loading="lazy" />
                                     <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition"></div>
                                 </button>
@@ -654,7 +668,7 @@
                             </div>
                             
                             {/* Área de Imagen y Botones de Navegación (para touch/desktop) */}
-                            {/* CAMBIO: Aumentado padding superior en escritorio de md:pt-20 a md:pt-32 para evitar que se pegue a la barra */}
+                            {/* MARGEN SUPERIOR MODIFICADO PARA ESCRITORIO: md:pt-32 */}
                             <div className="flex-grow flex items-center justify-center p-2 pt-20 md:pt-32 overflow-hidden relative w-full min-h-0" 
                                 onTouchStart={onTouchStart} 
                                 onTouchMove={onTouchMove} 
@@ -685,7 +699,7 @@
                                 {/* Contenedor de Miniaturas con scroll horizontal */}
                                 <div ref={thumbnailsRef} className="flex items-center space-x-2 overflow-x-auto p-1 h-20 md:h-32 justify-start scrollbar-hide">
                                     {selectedAlbum.images.map((img, idx) => (
-                                        <button key={idx} id={`thumb-${idx}`} type="button" className={`flex-shrink-0 cursor-pointer transition-all duration-300 ${idx === lightboxIndex ? 'border-4 border-dorado scale-105 opacity-100 shadow-lg' : 'border-2 border-transparent opacity-60 hover:opacity-90'} focus:outline-none focus:ring-2 focus:ring-white`} onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx); }} aria-label={`Ir a foto ${idx + 1}`} aria-current={idx === lightboxIndex ? 'true' : 'false'}>
+                                        <button key={img.src || idx} id={`thumb-${idx}`} type="button" className={`flex-shrink-0 cursor-pointer transition-all duration-300 ${idx === lightboxIndex ? 'border-4 border-dorado scale-105 opacity-100 shadow-lg' : 'border-2 border-transparent opacity-60 hover:opacity-90'} focus:outline-none focus:ring-2 focus:ring-white`} onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx); }} aria-label={`Ir a foto ${idx + 1}`} aria-current={idx === lightboxIndex ? 'true' : 'false'}>
                                             <img src={img.src} alt="" className="h-16 md:h-28 w-auto object-cover rounded-sm" loading="lazy" />
                                         </button>
                                     ))}
@@ -856,3 +870,4 @@
     </script>
 </body>
 </html>
+
