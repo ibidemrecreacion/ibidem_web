@@ -96,7 +96,7 @@
         },
         {
         "id": 12,
-        "title": "PVGNO, ERGO SVM",
+        "title": "Pvgno, ergo svm",
         "date": "25 de octubre, 2025",
         "location": { "locality": "Herrera (Sevilla)", "place": "Termas Romanas" },
         "desc": "Demostración de las técnicas de lucha (Pugilato) y combate de la antigüedad romana.",
@@ -160,7 +160,7 @@
         },
         {
         "id": 4,
-        "title": "Aqua, vita est",
+        "title": "Aqva, vita est",
         "date": "8 de septiembre, 2023",
         "location": { "locality": "Puente Genil", "place": "Villa romana de Fuente Álamo" },
         "desc": "Conoce los distintos usos del agua en la antigua cultura romana.",
@@ -188,7 +188,7 @@
         "date": "10 de marzo, 2023",
         "location": { "locality": "Córdoba", "place": "CALENDAS IN CORDVBA" },
         "desc": "Reconstrucción del parto de una patricia romana y sus implicaciones morales, religiosas y sociales",
-        "tags": ["Vida cotidiana", "Ritos", "Mujer"]
+        "tags": ["Vida cotidiana", "Rito", "Mujer"]
         }
     ]
   },
