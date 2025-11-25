@@ -321,9 +321,10 @@
                     
                     <div className="bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow">
                         
-                        {/* NUEVO: Imagen de portada y enlace a galería */}
-                        {/* Se muestra solo si hay coverImage Y al menos una imagen en la galería (coverImage o images.length > 0) */}
-                        {event.coverImage && (event.coverImage || (event.images && event.images.length > 0)) && (
+                        {/* ------------------------------------------- */}
+                        {/* CORRECCIÓN: Mostrar Imagen de portada si existe */}
+                        {/* ------------------------------------------- */}
+                        {event.coverImage && (
                             <div className="mb-4 -mt-2 -mx-2 md:-mt-4 md:-mx-4 rounded-t-xl overflow-hidden shadow-inner bg-gray-100">
                                 <a 
                                     href={`#imagina?id=${event.id}`} 
@@ -335,6 +336,7 @@
                                         alt={`Portada del evento: ${event.title}`} 
                                         className="w-full h-48 md:h-64 object-cover transition-transform duration-500 group-hover/image:scale-105" 
                                         loading="lazy" 
+                                        onerror="this.onerror=null; this.src='https://placehold.co/600x400/9A2A2A/F5EFE3?text=IMAGO+DEEST'" /* Fallback si la URL falla */
                                     />
                                 </a>
                             </div>
@@ -360,6 +362,7 @@
                             <p className="text-gray-600 mb-4 text-reading text-sm mt-2">{event.desc}</p>
                             
                             {/* Botón para ir a la galería del evento (CTA explícito) */}
+                            {/* Mostrar el botón si hay coverImage o si hay imágenes internas */}
                             {(event.coverImage || (event.images && event.images.length > 0)) && (
                                 <a href={`#imagina?id=${event.id}`} className="inline-flex items-center text-pizarra font-bold text-sm hover:text-pompeyano transition border-t border-gray-100 pt-3 w-full group-hover:text-dorado-safe">
                                     <span className="mr-2" aria-hidden="true"><Icon path={Icons.Camera} size={18}/></span> Ver Galería del Evento
@@ -485,8 +488,8 @@
                 
                 // 2. Álbumes Generados desde Fasti (Eventos)
                 const eventAlbums = allEvents.map(event => {
-                    // Solo si hay portada o imágenes definidas
-                    if (!event.coverImage && (!event.images || event.images.length === 0)) return null;
+                    // Si el evento no tiene ID o no tiene ninguna imagen, no generamos álbum
+                    if (!event.id || (!event.coverImage && (!event.images || event.images.length === 0))) return null;
 
                     // Construir la lista de imágenes, asegurando que coverImage es la primera
                     const albumImages = [];
@@ -766,6 +769,7 @@
                             setTimeout(() => loader.style.display = 'none', 500); 
                         }
                         
+                        // Si hay error, muestro la pantalla de error
                         if (errorScreen && error) {
                             errorScreen.style.display = 'flex';
                             errorScreen.style.opacity = '1';
