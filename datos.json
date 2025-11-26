@@ -230,6 +230,16 @@
            { "src": "https://raw.githubusercontent.com/ibidemrecreacion/ibidem/main/IMG-20251122-WA0028.jpg", "caption": "Crematio" },
            { "src": "https://raw.githubusercontent.com/ibidemrecreacion/ibidem/main/IMG-20251122-WA0020.jpg", "caption": "Framiliar en el momento final de la crematio" }
        ]
+        },
+        {
+       "id": 12,
+       "eventTitle": "Pvgno, ergo svm",
+       "date": "25 de octubre, 2025",
+       "location": { "locality": "Herrera (Sevilla", "place": "Termas romanas" },
+       "coverImage": "https://www.herrera.es/.galleries/imagenes-noticias/WhatsApp-Image-2025-10-14-at-12.39.11.jpeg",
+       "images": [
+           { "src": "https://www.herrera.es/.galleries/imagenes-noticias/WhatsApp-Image-2025-10-14-at-12.39.11.jpeg", "caption": "" }
+       ]
     }
   ]
 }
