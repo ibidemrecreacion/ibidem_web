@@ -30,7 +30,7 @@
     <style>
         /* Variables y estilos globales */
         :root {
-            --color-pompeyano: #9A2A2A;
+            --color-sigillata: #963b2f;
             --color-pergamino: #F5EFE3;
             --color-pizarra: #2A2A2A;
             --color-dorado: #B8860B;
@@ -49,11 +49,9 @@
         .font-cinzel { font-family: 'Cinzel', serif; }
         .font-merriweather { font-family: 'Merriweather', serif; }
         
-        /* Estilo de lectura justificado e hiphenación */
-        .text-reading { 
-            text-align: justify; 
-            -webkit-hyphens: auto; hyphens: auto;
-            line-height: 1.8;
+        /* Clases utilitarias romanas */
+        .border-roman {
+            border: 3px double var(--color-sigillata);
         }
 
         .text-dorado-safe { color: var(--color-dorado-safe); }
@@ -74,9 +72,16 @@
             outline-offset: 2px;
         }
         
-        /* Enlace para saltar contenido (Accesibilidad) */
-        .skip-link {
-            position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; z-index: 99999; 
+        /* Estilo específico para el contenido de artículo */
+        .article-content h2, .event-content h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--color-sigillata);
+            font-weight: 700;
+            font-size: 1.75rem; /* 28px */
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--color-dorado);
+            padding-bottom: 0.5rem;
         }
         .skip-link:focus {
             position: absolute; left: 0; top: 0; width: auto; height: auto; padding: 10px; background: var(--color-pompeyano); color: white; text-decoration: none; font-family: 'Cinzel', serif; font-weight: bold;
@@ -99,25 +104,11 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* Ocultar scrollbar en contenedor de miniaturas (para el Lightbox) y timeline */
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-
-        /* Estilos para la cabecera dinámica */
-        .main-header {
-            /* Cambio de opacidad/blur a color sólido para mejor visibilidad */
-            background-color: var(--color-pergamino); 
-            transition: top 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* Añadir sombra por defecto */
-        }
-        /* Clase añadida por JS para ocultar la cabecera */
-        .header-hidden {
-            top: -6rem; /* Ocultar completamente (la altura de la barra + margen) */
-            box-shadow: none; /* Quitar sombra cuando está oculta */
-        }
-        /* Asegurar que el menú móvil tenga el fondo correcto y solidez */
-        .mobile-menu-open {
-            background-color: var(--color-pompeyano);
+        /* Estilo específico para el cartel de evento */
+        .event-poster {
+            background-color: #ffffff;
+            border: 5px solid var(--color-sigillata);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
     </style>
     
@@ -127,11 +118,10 @@
             theme: {
                 extend: {
                     colors: {
-                        pompeyano: 'var(--color-pompeyano)',
-                        pergamino: 'var(--color-pergamino)',
-                        pizarra: 'var(--color-pizarra)',
-                        dorado: 'var(--color-dorado)',
-                        'dorado-safe': 'var(--color-dorado-safe)'
+                        sigillata: '#963b2f',
+                        pergamino: '#F5EFE3',
+                        pizarra: '#2A2A2A',
+                        dorado: '#B8860B',
                     }
                 }
             }
@@ -230,17 +220,103 @@
             );
         };
 
-        const ModalLegal = ({ type, onClose }) => { 
-            if (!type) return null; 
-            const titles = { legal: "Aviso Legal", accesibilidad: "Declaración de Accesibilidad" }; 
-            const content = { 
-                legal: (<React.Fragment><p className="mb-4 font-bold">TITULARIDAD:</p><p className="mb-4">Ibidem, Asociación de Recreación Histórica.</p><p className="mb-4 font-bold">OBJETO:</p><p className="mb-4">Divulgación histórica y cultural.</p><p className="mb-4 font-bold">PROPIEDAD INTELECTUAL:</p><p className="mb-4">Contenidos propiedad de Ibidem. Prohibida reproducción sin permiso.</p></React.Fragment>), 
-                accesibilidad: (<React.Fragment><p className="mb-4 font-bold">COMPROMISO:</p><p className="mb-4">Cumplimiento básico con estándares WCAG 2.1.</p><ul className="list-disc ml-5 mb-4 space-y-1"><li>Alto contraste.</li><li>Navegación teclado.</li><li>Textos alt.</li></ul></React.Fragment>) 
-            }; 
-            return (<div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-[100001] fade-in" onClick={onClose} role="dialog" aria-modal="true"><div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 md:p-8 relative" onClick={e => e.stopPropagation()}><button className="absolute top-3 right-3 text-pizarra hover:text-pompeyano p-2" onClick={onClose} aria-label="Cerrar modal"><Icon path={Icons.X} size={24}/></button><h2 className="font-cinzel text-xl md:text-2xl font-bold text-pompeyano mb-4 border-b pb-2">{titles[type]}</h2><div className="text-gray-700 text-sm font-merriweather text-reading">{content[type]}</div><button className="mt-6 w-full bg-pompeyano text-white font-cinzel tracking-widest py-2 rounded hover:bg-pompeyano/80 transition" onClick={onClose}>CERRAR</button></div></div>); 
+        // --- Componente de Título de Sub-Sección ---
+        const SectionTitle = ({ children, subtitle }) => (
+            <div className="text-center mb-10">
+                <h2 className="font-cinzel text-3xl md:text-4xl font-bold text-pizarra inline-block border-b-4 border-dorado pb-2 px-4">
+                    {children}
+                </h2>
+                {subtitle && <p className="font-merriweather italic text-sigillata mt-4 text-lg">{subtitle}</p>}
+            </div>
+        );
+
+        // =====================================================================
+        // 📜 COMPONENTE: ARTICLE PAGE (Mantenido) 📜
+        // =====================================================================
+
+        const renderTextContent = (content) => {
+            return content.split('\n\n').map((paragraph, index) => {
+                const blockquoteMatch = paragraph.match(/^blockquote:(.*)/s);
+                if (blockquoteMatch) {
+                    return (
+                        <blockquote key={index} className="border-l-4 border-dorado bg-pergamino/50 p-4 md:p-6 my-6 italic text-gray-700 rounded-r-md shadow-inner">
+                            {blockquoteMatch[1].trim()}
+                        </blockquote>
+                    );
+                }
+                const simpleNewlines = paragraph.trim().split('\n').map((line, lineIndex) => (
+                    <span key={lineIndex}>{line}{lineIndex < paragraph.trim().split('\n').length - 1 && <br />}</span>
+                ));
+                return <p key={index}>{simpleNewlines}</p>;
+            });
         };
 
-        // --- PÁGINAS ---
+        const PageArticle = ({ articleId, setPage }) => {
+            const article = articleContent; 
+
+            return (
+                <div className="fade-in max-w-4xl mx-auto">
+                    {/* Botón de Regreso */}
+                    <button 
+                        onClick={() => setPage('tabularium')} 
+                        className="flex items-center text-sigillata font-cinzel font-bold mb-8 hover:text-dorado transition"
+                    >
+                        <Icons.ArrowLeft size={20} className="mr-2" /> Volver al Tabularium
+                    </button>
+
+                    {/* Contenedor Principal del Artículo */}
+                    <div className="bg-white p-6 md:p-12 rounded-xl shadow-2xl border-roman-gold">
+                        
+                        {/* Cabecera del Artículo */}
+                        <div className="text-center mb-8 pb-4 border-b-2 border-sigillata">
+                            <span className="text-sm font-cinzel text-dorado uppercase tracking-widest bg-pergamino px-3 py-1 rounded-full border border-dorado">
+                                {article.category}
+                            </span>
+                            <h1 className="font-cinzel text-3xl md:text-5xl font-bold text-pizarra mt-4 mb-2">{article.title}</h1>
+                            <p className="text-gray-500 italic text-sm">
+                                Publicado el {article.date} por {article.author}
+                            </p>
+                        </div>
+
+                        {/* Imagen de Portada */}
+                        <img src={article.img} alt={`Imagen principal de ${article.title}`} className="w-full h-auto rounded-lg shadow-lg mb-8" />
+                        
+                        {/* Introducción */}
+                        <section className="mb-10 p-4 border-l-4 border-sigillata bg-pergamino/70 rounded-r-md">
+                             <p className="text-xl italic text-gray-800 leading-relaxed font-cinzel">{article.intro}</p>
+                        </section>
+
+                        {/* Contenido por Secciones */}
+                        <div className="article-content">
+                            {article.sections.map((section, index) => (
+                                <section key={index} className="mb-10">
+                                    <h2>{section.title}</h2>
+                                    {renderTextContent(section.content)}
+                                    {section.image && (
+                                        <figure className="my-8">
+                                            <img src={section.image} alt={section.title} className="w-full h-auto rounded-lg shadow-md border border-gray-200" />
+                                            <figcaption className="text-center text-sm italic text-gray-500 mt-2">
+                                                Figura {index + 1}: {section.title}
+                                            </figcaption>
+                                        </figure>
+                                    )}
+                                </section>
+                            ))}
+                        </div>
+                        
+                        {/* Bibliografía */}
+                        <section className="mt-12 pt-8 border-t border-gray-200">
+                            <h2 className="font-cinzel text-2xl font-bold text-sigillata border-none mb-4 flex items-center">
+                                <Icons.BookOpen size={24} className="mr-2" /> BIBLIOGRAFÍA CITADA
+                            </h2>
+                            <ul className="text-sm text-gray-600 space-y-2 list-none pl-0">
+                                {article.bibliografia.map((ref, index) => (
+                                    <li key={index} className="before:content-['•'] before:mr-2 before:text-dorado">
+                                        {ref}
+                                    </li>
+                                ))}
+                            </ul>
+                        </section>
 
         const PageHome = ({ data }) => (
             <div className="fade-in">
@@ -252,21 +328,14 @@
                             {data.home.heroTitle}
                         </h1>
                     </div>
-                </section>
-                <section className="max-w-4xl mx-auto text-center mb-12 px-4">
-                    <p className="text-base md:text-xl text-pizarra leading-relaxed text-reading">{data.home.intro}</p>
-                </section>
-                
-                {/* 2. PILARES */}
-                <SectionTitle subtitle="Nuestros pilares">NOSTRA FUNDAMENTA</SectionTitle>
-                <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-12 px-4">
-                    {data.home.pilares.map((pilar, index) => (
-                        <article key={index} className="bg-white p-5 md:p-6 rounded-lg shadow-lg border-t-4 border-dorado hover:-translate-y-1 transition-transform duration-300">
-                            <h3 className="font-cinzel text-lg md:text-xl font-bold text-pompeyano mb-3">{pilar.title}</h3>
-                            <p className="text-gray-700 mb-4 text-sm text-reading">{pilar.text}</p>
-                            <a href={`#${pilar.linkTo}`} className="text-dorado-safe font-bold text-xs uppercase tracking-widest hover:text-pompeyano flex items-center gap-1">Saber más <span aria-hidden="true">&rarr;</span></a>
-                        </article>
-                    ))}
+                    <div className="mt-8 text-center">
+                        <button 
+                            onClick={() => setPage('tabularium')} 
+                            className="text-pizarra font-cinzel font-bold hover:text-sigillata transition underline"
+                        >
+                            &larr; Volver a la Lista de Artículos
+                        </button>
+                    </div>
                 </div>
             </div>
         );
@@ -319,38 +388,40 @@
                 });
             }, [data]);
 
-            // 2. Separar Futuros y Pasados
-            const { futureEvents, groupedPastEvents, years } = useMemo(() => {
-                const now = new Date(); now.setHours(0,0,0,0);
-                
-                const future = [];
-                const past = [];
+            return (
+                <div className="fade-in max-w-4xl mx-auto">
+                    {/* Botón de Regreso */}
+                    <button 
+                        onClick={() => setPage('fasti')} 
+                        className="flex items-center text-sigillata font-cinzel font-bold mb-8 hover:text-dorado transition"
+                    >
+                        <Icons.ArrowLeft size={20} className="mr-2" /> Volver al Calendario (Fasti)
+                    </button>
 
-                enrichedEvents.forEach(evt => {
-                    const d = parseDate(evt.date);
-                    if (d >= now) future.push(evt);
-                    else past.push(evt);
-                });
+                    {/* Cartel Principal del Evento */}
+                    <div className="event-poster bg-pergamino/80 p-6 md:p-10 rounded-xl shadow-2xl">
+                        
+                        {/* Título y Subtítulo */}
+                        <div className="text-center mb-8 bg-sigillata/10 p-4 rounded-lg border-b-4 border-dorado">
+                            <h1 className="font-cinzel text-3xl md:text-5xl font-extrabold text-sigillata mb-1">{event.title}</h1>
+                            <p className="font-cinzel text-xl text-pizarra tracking-widest italic">{event.subtitle}</p>
+                        </div>
+                        
+                        {/* Imagen del Evento */}
+                        <img src={event.img} alt={`Imagen de ${event.title}`} className="w-full h-auto rounded-lg shadow-xl mb-8 border-4 border-pizarra" />
 
-                // Ordenar Futuros: Más cercanos primero (Ascendente)
-                future.sort((a, b) => parseDate(a.date) - parseDate(b.date));
-
-                // Ordenar Pasados: Más recientes primero (Descendente)
-                const sortedPast = past.sort((a, b) => parseDate(b.date) - parseDate(a.date));
-
-                // Agrupar Pasados por Año
-                const grouped = {};
-                sortedPast.forEach(evt => {
-                    const d = parseDate(evt.date);
-                    const y = d.getFullYear() || "Antiguo";
-                    if (!grouped[y]) grouped[y] = [];
-                    grouped[y].push(evt);
-                });
-                
-                const yearsList = Object.keys(grouped).sort((a, b) => b - a);
-
-                return { futureEvents: future, groupedPastEvents: grouped, years: yearsList };
-            }, [enrichedEvents]);
+                        {/* Ficha de Información Clave */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 text-center font-cinzel font-semibold text-lg">
+                            <div className="p-4 bg-dorado text-white rounded-lg shadow-md flex items-center justify-center">
+                                <Icons.Calendar size={20} className="mr-2" /> <span>{event.date}</span>
+                            </div>
+                            <div className="p-4 bg-pizarra text-pergamino rounded-lg shadow-md flex items-center justify-center">
+                                <Icons.Clock size={20} className="mr-2" /> <span>{event.time}</span>
+                            </div>
+                            <div className="p-4 bg-sigillata text-white rounded-lg shadow-md flex items-center justify-center">
+                                <Icons.MapPin size={20} className="mr-2" /> <span>{event.location}</span>
+                            </div>
+                        </div>
 
             const scroll = (direction) => {
                 if (scrollRef.current) {
@@ -359,70 +430,105 @@
                 }
             };
 
-            const EventCard = ({ event, isFuture }) => (
-                <a href={`#imagina?id=${event.id}`} className={`block bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 group/card focus:outline-none focus:ring-4 focus:ring-pompeyano flex flex-col h-full ${isFuture ? 'hover:shadow-xl hover:-translate-y-1 border-t-4 border-pompeyano' : 'hover:shadow-2xl hover:-translate-y-2 border-t-4 border-dorado'}`}>
-                    {event.displayImage ? (
-                        <div className={`${isFuture ? 'h-56' : 'h-40'} overflow-hidden relative`}>
-                            <img src={event.displayImage} alt={event.title} className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"/>
-                            <div className="absolute inset-0 bg-pompeyano/60 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <span className="text-pergamino font-cinzel font-bold tracking-widest text-sm flex items-center gap-2"><Icon path={Icons.Camera} size={18}/> VER GALERÍA</span>
+                        {/* Contenido Detallado: Agenda y Requerimientos */}
+                        <div className="event-content grid md:grid-cols-2 gap-8">
+                            <section>
+                                <h2>AGENDA (ORDO DIERUM)</h2>
+                                <ol className="list-decimal list-inside space-y-4 text-gray-700">
+                                    {event.sections.find(s => s.title === 'Agenda (Fasti)').content.map((item, index) => (
+                                        <li key={index} className="pl-2">
+                                            <strong className="text-sigillata">{item.time}:</strong> {item.activity}
+                                        </li>
+                                    ))}
+                                </ol>
+                            </section>
+                            <section>
+                                <h2>REQUERIMIENTOS</h2>
+                                <ul className="space-y-4 text-gray-700">
+                                    {event.sections.find(s => s.title === 'Requerimientos de Participación').content.map((req, index) => (
+                                        <li key={index} className="flex items-start before:content-['\2022'] before:text-dorado before:mr-2 before:font-bold">
+                                            {req}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
+                        </div>
+
+                        {/* Logística y Contacto */}
+                        <section className="mt-12 pt-8 border-t border-sigillata/30">
+                            <h2>DETALLES LOGÍSTICOS Y CONTACTO</h2>
+                            <div className="text-sm">
+                                {renderGeneralContent(event.sections.find(s => s.title === 'Detalles Logísticos y Contacto').content)}
                             </div>
-                        </div>
-                    ) : (
-                        <div className={`${isFuture ? 'h-56' : 'h-40'} bg-gray-100 flex items-center justify-center text-gray-400 group-hover/card:bg-gray-200 transition-colors relative`}>
-                            <Icon path={Icons.Camera} size={32} />
-                            <div className="absolute inset-0 bg-pompeyano/60 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <span className="text-pergamino font-cinzel font-bold tracking-widest text-sm">VER GALERÍA</span>
-                            </div>
-                        </div>
-                    )}
-                    
-                    <div className="p-4 flex-grow flex flex-col">
-                        <div className="mb-2">
-                            <h3 className={`font-cinzel font-bold leading-tight ${isFuture ? 'text-xl text-pizarra' : 'text-base md:text-lg text-pompeyano'}`}>{event.title}</h3>
-                        </div>
-                        <div className="flex items-center gap-2 text-gray-500 mb-3 text-xs md:text-sm">
-                            <span className="bg-dorado/10 text-dorado-safe px-2 py-0.5 rounded border border-dorado/30 font-bold uppercase tracking-wider">{event.date}</span>
-                        </div>
-                        <div className="flex items-start gap-1 text-gray-500 mb-3">
-                            <Icon path={Icons.MapPin} size={14} className="mt-0.5 flex-shrink-0"/>
-                            <p className="font-merriweather text-xs uppercase tracking-wide">{event.location.locality}</p>
-                        </div>
-                        <p className="font-merriweather text-xs md:text-sm text-gray-700 line-clamp-3 mb-4">{event.desc}</p>
-                        
-                        <div className="mt-auto pt-3 border-t border-gray-100 flex flex-wrap gap-1">
-                            {event.tags && event.tags.slice(0,3).map((t, i) => (
-                                <span key={i} className="text-[9px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded uppercase">{t}</span>
-                            ))}
-                        </div>
+                        </section>
+                    </div>
+
+                    <div className="mt-8 text-center">
+                        <button 
+                            onClick={() => setPage('fasti')} 
+                            className="text-pizarra font-cinzel font-bold hover:text-sigillata transition underline"
+                        >
+                            &larr; Volver al Calendario de Eventos
+                        </button>
                     </div>
                 </a>
             );
 
-            return (
-                <div className="fade-in w-full h-full pb-8">
-                    <SectionHeader title="FASTI" subtitle="Calendario y Eventos" />
-                    
-                    {/* --- SECCIÓN 1: PROXIMA EVENTA (FUTUROS) --- */}
-                    {futureEvents.length > 0 && (
-                        <div className="max-w-6xl mx-auto px-4 mb-16">
-                            <SectionTitle subtitle="Próximas Actividades">PROXIMA EVENTA</SectionTitle>
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {futureEvents.map(evt => (
-                                    <div key={evt.id} className="transform transition hover:scale-[1.01]">
-                                        <EventCard event={evt} isFuture={true} />
-                                    </div>
-                                ))}
+        // --- Páginas ---
+
+        const PageHome = ({ setPage }) => (
+            <div className="fade-in">
+                <PageHero 
+                    image={DATA.general.heroImageHome} 
+                    title="Reconstrucción histórica de la vida civil con rigor académico" 
+                    subtitle="" 
+                    align="bottom-left"
+                />
+                
+                <section className="max-w-4xl mx-auto text-center mb-16 px-4">
+                    <h2 className="font-cinzel text-3xl font-bold text-sigillata mb-6">Más allá del estudio</h2>
+                    <p className="text-lg md:text-xl text-pizarra leading-relaxed text-justify">
+                        {DATA.home.intro}
+                    </p>
+                </section>
+
+                <section className="mb-16">
+                    {/* Cambio de subtítulo solicitado */}
+                    <SectionTitle subtitle="Nuestros pilares">NOSTRA FUNDAMENTA</SectionTitle>
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {DATA.home.pilares.map((pilar, index) => (
+                            <div key={index} className="bg-white p-8 rounded-lg shadow-lg border-t-4 border-dorado hover:-translate-y-2 transition duration-300">
+                                {/* Aumentado el tamaño del título del pilar */}
+                                <h3 className="font-cinzel text-2xl font-bold text-sigillata mb-4">{pilar.title}</h3>
+                                {/* Texto justificado */}
+                                <p className="text-gray-700 mb-6 text-justify">{pilar.text}</p>
+                                <button 
+                                    onClick={() => setPage(pilar.linkTo)} 
+                                    className="text-dorado font-bold hover:text-sigillata transition flex items-center text-sm uppercase tracking-widest"
+                                >
+                                    Saber más &rarr;
+                                </button>
                             </div>
                         </div>
                     )}
 
-                    {/* --- SECCIÓN 2: ACTA PRAETERITA (LÍNEA DE TIEMPO PASADA) --- */}
-                    <SectionTitle subtitle="Línea Temporal de Eventos">ACTA PRAETERITA</SectionTitle>
-                    <div className="max-w-7xl mx-auto relative group/container mt-8">
-                        
-                        <div className="mb-6 text-center text-sm italic text-gray-600 font-merriweather">
-                            <p>Desliza para explorar nuestra historia.</p>
+        const PageNostri = () => (
+            <div className="fade-in">
+                <SectionHeader title="NOSTRI" subtitle="Nuestra Historia" />
+                
+                {/* Primer bloque: Initia et Progressus */}
+                {/* Ajustado a max-w-4xl para consistencia de anchura */}
+                <section className="max-w-4xl mx-auto mb-16">
+                    {/* Eliminado border-roman (cenefa) */}
+                    <div className="bg-white p-8 md:p-12 rounded-lg shadow-xl">
+                        <h3 className="font-cinzel text-2xl font-bold text-pizarra mb-1">Initia et Progressus</h3>
+                        {/* Nuevo subtítulo añadido */}
+                        <p className="font-cinzel text-sigillata italic mb-6">origen y trayectoria</p>
+                        <p className="text-lg text-justify leading-relaxed mb-6 text-gray-700">
+                            {DATA.nostri.text}
+                        </p>
+                        <div className="bg-pergamino p-4 border-l-4 border-sigillata italic text-sigillata">
+                            "En Ibidem, cada costura, cada receta, cada herramienta es un argumento histórico."
                         </div>
 
                         {/* Botones de navegación timeline */}
@@ -455,9 +561,39 @@
                                 ))}
                             </div>
                         </div>
-                        
-                        <div className="text-center text-gray-400 italic text-xs mt-6 flex md:hidden items-center justify-center gap-2 animate-pulse">
-                            <Icon path={Icons.ArrowLeft} size={14}/> <span className="font-merriweather">Desliza horizontalmente</span> <Icon path={Icons.ArrowLeft} size={14} className="rotate-180"/>
+                    </div>
+                </section>
+            </div>
+        );
+        
+        const PageRostra = () => (
+            <div className="fade-in">
+                <SectionHeader title="ROSTRA" subtitle="Actualidad y Noticias" />
+                
+                {/* Changed subtitle as requested */}
+                <SectionTitle subtitle="Actualidad en arqueología y recreación">QUID NOVI?</SectionTitle>
+                
+                <div className="max-w-4xl mx-auto space-y-10">
+                    {DATA.rostra.news.map((item, idx) => (
+                        <div key={item.id} className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-sigillata md:flex items-start gap-6 hover:shadow-2xl transition duration-300">
+                            <div className="shrink-0 mb-4 md:mb-0">
+                                <img 
+                                    src={item.image} 
+                                    alt={item.title} 
+                                    className="w-full md:w-48 h-32 object-cover rounded-md border border-gray-200"
+                                />
+                            </div>
+                            <div className="flex-grow">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-xs font-cinzel text-dorado uppercase tracking-widest bg-pergamino px-3 py-1 rounded-full border border-dorado">{item.tag}</span>
+                                    <span className="text-xs text-gray-500 italic">{item.date}</span>
+                                </div>
+                                <h3 className="font-cinzel text-xl font-bold text-pizarra mb-3 hover:text-sigillata transition cursor-pointer">{item.title}</h3>
+                                <p className="text-gray-700 text-sm leading-relaxed mb-4">{item.summary}</p>
+                                <button className="text-sigillata font-bold hover:underline text-sm flex items-center">
+                                    <Icons.Newspaper size={16} className="mr-2" /> Leer más
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -478,26 +614,38 @@
             return (
                 <div className="fade-in">
                     <SectionHeader title="TABULARIUM" subtitle="Archivo Académico" />
-                    <div className="max-w-4xl mx-auto mb-8 md:mb-10 px-4">
-                        <div className="relative mb-6">
-                            <input type="text" placeholder="Buscar artículos..." className="w-full p-3 pl-10 rounded-lg border-2 border-gray-200 focus:border-pompeyano focus:outline-none font-merriweather" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} aria-label="Buscar artículos en el Tabularium"/>
-                            <div className="absolute left-3 top-3.5 text-gray-400"><Icon path={Icons.Search} size={20} /></div>
-                        </div>
-                        <div className="flex flex-wrap justify-center gap-2">
-                            {categories.map(cat => (
-                                <button key={cat} onClick={() => setCategoryFilter(cat)} className={`px-3 py-1 text-[10px] rounded-full font-cinzel font-bold tracking-wider border transition ${categoryFilter === cat ? 'bg-pompeyano text-white border-pompeyano' : 'bg-white text-gray-600 border-gray-300 hover:border-pompeyano'}`} aria-pressed={categoryFilter === cat}>{cat.toUpperCase()}</button>
-                            ))}
-                        </div>
+                    
+                    <div className="flex flex-wrap justify-center gap-4 mb-12">
+                        {categories.map(cat => (
+                            <button 
+                                key={cat}
+                                onClick={() => setFilter(cat)}
+                                className={`px-6 py-2 rounded-full font-cinzel text-sm transition-all duration-300 ${
+                                    filter === cat 
+                                    ? 'bg-sigillata text-white shadow-lg scale-105' 
+                                    : 'bg-white text-pizarra border border-gray-300 hover:border-dorado hover:text-dorado'
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
                     </div>
                     <div className="grid md:grid-cols-2 gap-6 md:gap-8 mx-2 md:mx-auto">
                         {filteredArticles.map(article => (
-                            <article key={article.id} className="bg-white rounded-lg overflow-hidden shadow-lg flex flex-col hover:shadow-2xl transition-shadow duration-300">
-                                <div className="h-40 md:h-48 overflow-hidden"><img src={article.img} className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" alt={`Imagen de portada para el artículo: ${article.title}`} loading="lazy" /></div>
-                                <div className="p-4 md:p-6 flex-grow flex flex-col">
-                                    <span className="text-xs font-cinzel text-dorado-safe uppercase mb-2 tracking-widest">{article.category}</span>
-                                    <h3 className="font-cinzel text-lg md:text-xl font-bold text-pompeyano mb-3 leading-tight">{article.title}</h3>
-                                    <p className="text-gray-600 text-sm mb-4 flex-grow text-reading line-clamp-3">{article.summary}</p>
-                                    <a href={`#article?id=${article.id}`} className="text-pompeyano font-bold text-sm mt-auto hover:text-dorado-safe flex items-center">Leer Artículo <span className="ml-1">&rarr;</span></a>
+                            <article key={article.id} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 group flex flex-col">
+                                <div className="overflow-hidden h-48">
+                                    <img src={article.img} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+                                </div>
+                                <div className="p-6 flex-grow flex flex-col">
+                                    <div className="text-xs font-cinzel text-dorado uppercase tracking-widest mb-2">{article.category} | {article.date}</div>
+                                    <h3 className="font-cinzel text-xl font-bold text-sigillata mb-3 group-hover:text-pizarra transition">{article.title}</h3>
+                                    <p className="text-gray-600 text-sm mb-4 flex-grow text-justify">{article.desc}</p>
+                                    <button 
+                                        onClick={() => setPage('article')} 
+                                        className="mt-auto text-sigillata font-bold hover:underline text-sm self-start flex items-center"
+                                    >
+                                        <Icons.BookOpen size={16} className="mr-2" /> Leer Artículo &rarr;
+                                    </button>
                                 </div>
                             </article>
                         ))}
@@ -506,34 +654,44 @@
             );
         };
 
-        const PageArticle = ({ id, data }) => {
-            const article = data.tabularium.find(a => a.id == id);
-            // Enfocar el título al cargar para accesibilidad
-            useEffect(() => { window.scrollTo(0,0); const title = document.getElementById('article-title'); if(title) title.focus(); }, [id]);
-            if (!article) return <div className="text-center py-20 text-pompeyano font-cinzel text-xl">Artículo no encontrado.</div>;
-            
-            return (
-                <article className="fade-in max-w-3xl mx-auto bg-white p-6 md:p-12 rounded-xl shadow-2xl my-4 md:my-8 mx-2 md:mx-auto">
-                    <nav aria-label="Navegación artículo"><a href="#tabularium" className="flex items-center text-pompeyano font-bold mb-6 hover:text-dorado-safe transition"><span className="mr-2" aria-hidden="true"><Icon path={Icons.ArrowLeft}/></span> Volver al Tabularium</a></nav>
-                    <header className="mb-6 md:mb-8 border-b border-dorado pb-4 text-center md:text-left">
-                        <span className="text-xs font-cinzel text-dorado-safe uppercase tracking-widest mb-2 block">{article.category}</span>
-                        <h1 id="article-title" className="font-cinzel text-xl md:text-3xl font-bold text-pizarra mb-2 leading-tight focus:outline-none" tabIndex="-1">{article.title}</h1>
-                        <p className="text-gray-500 italic text-sm">Por {article.author} | {article.date}</p>
-                    </header>
-                    <img src={article.img} className="w-full rounded-lg mb-8 md:mb-10 shadow-md" alt={`Portada de ${article.title}`} />
-                    <p className="text-base md:text-lg text-gray-800 mb-8 md:mb-10 border-l-4 border-pompeyano pl-4 font-merriweather text-reading italic bg-gray-50 p-4 rounded-r">{article.intro}</p>
-                    {article.sections.map((sec, i) => (
-                        <section key={i} className="mb-6 md:mb-8">
-                            <h2 className="font-cinzel text-lg md:text-xl font-bold text-pompeyano mb-3 border-b border-gray-200 pb-1">{sec.title}</h2>
-                            <p className="text-gray-700 leading-relaxed text-reading mb-4 text-sm md:text-base">{sec.content}</p>
-                            {sec.image && (<figure className="my-6"><img src={sec.image} alt={sec.caption || `Ilustración de ${sec.title}`} className="w-full h-auto rounded-lg shadow-sm border border-gray-200" loading="lazy" />{sec.caption && <figcaption className="text-xs text-gray-500 text-center mt-2 italic">{sec.caption}</figcaption>}</figure>)}
-                        </section>
-                    ))}
-                    {article.bibliography && article.bibliography.length > 0 && (
-                        <footer className="mt-8 md:mt-12 pt-6 md:pt-8 border-t-2 border-gray-200 bg-gray-50 p-6 rounded-lg">
-                            <div className="mb-4"><h3 className="font-cinzel text-base md:text-lg font-bold text-pizarra flex items-center"><span className="mr-2" aria-hidden="true"><Icon path={Icons.BookOpen} size={20}/></span> FONTES ET BIBLIOGRAPHIA</h3></div>
-                            <ul className="text-xs md:text-sm text-gray-700 font-merriweather">{article.bibliography.map((ref, i) => (<li key={i} className="biblio-item" dangerouslySetInnerHTML={{__html: ref}}></li>))}</ul>
-                        </footer>
+        const PageFasti = ({ setPage }) => (
+            <div className="fade-in">
+                <SectionHeader title="FASTI" subtitle="Calendario y Eventos" />
+                
+                {/* SECCIÓN 1: EVENTOS FUTUROS */}
+                <SectionTitle subtitle="Próximas Actividades">PROXIMA EVENTA</SectionTitle>
+                
+                <div className="max-w-5xl mx-auto space-y-6 mb-16">
+                    {DATA.fasti.upcoming.length > 0 ? (
+                        DATA.fasti.upcoming.map((event, idx) => (
+                            <div 
+                                key={idx} 
+                                className={`bg-white rounded-xl shadow-md overflow-hidden md:flex ${event.main ? 'border-l-8 border-sigillata' : 'border-l-4 border-dorado'} hover:shadow-xl hover:scale-[1.01] transition duration-300 cursor-pointer`}
+                                onClick={() => setPage('eventDetail')}
+                            >
+                                <div className={`md:w-32 ${event.main ? 'bg-sigillata text-pergamino' : 'bg-gray-100 text-pizarra'} p-6 flex flex-col justify-center items-center text-center shrink-0`}>
+                                    <span className="font-cinzel text-4xl font-bold">{event.day}</span>
+                                    <span className="font-cinzel text-sm uppercase tracking-wider">{event.month}</span>
+                                </div>
+                                <div className="p-6 flex-grow">
+                                    <h3 className="font-cinzel text-xl md:text-2xl font-bold text-pizarra mb-2">{event.title}</h3>
+                                    <div className="flex items-center text-dorado font-cinzel text-sm mb-3">
+                                        <Icons.MapPin size={16} className="mr-2" />
+                                        {event.location}
+                                    </div>
+                                    <p className="text-gray-600">{event.desc}</p>
+                                    <button className="mt-3 text-sigillata font-bold hover:underline text-sm self-start flex items-center">
+                                        <Icons.Calendar size={16} className="mr-2" /> Ver Anuncio Completo &rarr;
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        // MENSAJE DE VACÍO PERSONALIZADO EN LATÍN
+                        <div className="bg-white/60 p-12 rounded-xl shadow-inner border-2 border-gray-200 text-center">
+                             <h3 className="font-cinzel text-2xl font-bold text-sigillata mb-2">"Silentium est in Fastis"</h3>
+                             <p className="text-gray-600 italic">Actualmente no hay eventos programados en el calendario.</p>
+                        </div>
                     )}
                 </article>
             );
@@ -557,35 +715,48 @@
                     // Buscar si hay info extra en manualAlbums (Imagina) para este ID
                     const manualMatch = manualAlbums.find(m => m.id === event.id);
                     
-                    // Estrategia de imagen: Priorizar manualMatch, luego event.coverImage
-                    let coverSrc = event.coverImage;
-                    let internalImages = event.images || [];
+                    <div className="max-w-4xl mx-auto relative border-l-4 border-sigillata/30 ml-6 md:ml-12 space-y-12 pb-12">
+                        {DATA.fasti.past.map((event, idx) => (
+                            <div key={idx} className="relative pl-8 md:pl-12">
+                                {/* Punto de la línea de tiempo */}
+                                <div className="absolute -left-[10px] top-2 w-4 h-4 rounded-full bg-dorado border-2 border-sigillata z-10"></div>
+                                
+                                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300 border border-gray-100 relative group">
+                                    <div className="md:flex justify-between items-start">
+                                        <div>
+                                            <h3 className="font-cinzel text-xl font-bold text-sigillata">{event.title}</h3>
+                                            <div className="flex flex-wrap items-center gap-4 text-sm font-cinzel text-dorado mb-3">
+                                                <span className="font-bold">{event.date}</span>
+                                                <span className="hidden md:inline">•</span>
+                                                <span className="flex items-center"><Icons.MapPin size={14} className="mr-1"/> {event.location}</span>
+                                            </div>
+                                            
+                                            {/* Etiquetas de Evento Pasado */}
+                                            <div className="flex gap-2 mb-4">
+                                                {event.tags && event.tags.map((tag, tIdx) => (
+                                                    <span key={tIdx} className="text-xs bg-pergamino text-pizarra px-2 py-1 rounded border border-dorado/50">{tag}</span>
+                                                ))}
+                                            </div>
 
-                    if (manualMatch) {
-                        if (!coverSrc) coverSrc = manualMatch.coverImage;
-                        if (internalImages.length === 0 && manualMatch.images) {
-                            internalImages = manualMatch.images;
-                        }
-                    }
-
-                    // Construir lista de imágenes
-                    const albumImages = [];
-                    // Agregar portada si no está repetida
-                    if (coverSrc) {
-                         if (!internalImages[0] || internalImages[0].src !== coverSrc) {
-                            albumImages.push({ src: coverSrc, caption: event.title + " (Portada)" });
-                        }
-                    }
-                    albumImages.push(...internalImages);
-
-                    // Si NO hay imágenes en absoluto, creamos un placeholder o usamos la portada genérica
-                    // Pero para ser consistente con "Galería por cada evento", si no hay fotos,
-                    // al menos mostramos la "Portada" si existe, o un placeholder si no.
-                    // El usuario pidió "galería por cada uno", así que forzamos creación.
-                    if (albumImages.length === 0) {
-                         // Fallback visual
-                         albumImages.push({ src: "https://placehold.co/800x600/9A2A2A/F5EFE3?text=IMAGO+DEEST", caption: "Imagen no disponible" });
-                    }
+                                            <p className="text-gray-600 mb-4 text-justify leading-relaxed">{event.desc}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Botón de Enlace a Galería Contextual */}
+                                    <button 
+                                        onClick={() => {
+                                            // Idealmente aquí pasaríamos un filtro a la galería, por ahora redirige
+                                            setPage('imagina');
+                                        }} 
+                                        className="text-pizarra hover:text-sigillata font-bold text-sm flex items-center transition border-t border-gray-100 pt-3 mt-2 w-full group-hover:text-dorado"
+                                    >
+                                        <Icons.Camera size={16} className="mr-2" /> Ver Reportaje Gráfico
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
                     return { 
                         id: event.id,
@@ -750,19 +921,24 @@
             const currentImg = lightboxIndex >= 0 ? selectedAlbum.images[lightboxIndex] : null;
 
             return (
-                <div>
-                    <div className="fade-in mx-2 md:mx-auto">
-                        <nav aria-label="Navegación galería"><a href="#imagina" onClick={(e) => {if(albumId) {setSelectedAlbum(null);}}} className="flex items-center text-pompeyano font-bold mb-6 hover:text-dorado-safe transition"><span className="mr-2" aria-hidden="true"><Icon path={Icons.ArrowLeft}/></span> Volver a Álbumes</a></nav>
-                        <SectionHeader title={selectedAlbum.eventTitle} subtitle={selectedAlbum.date} />
-                        {/* Ajuste de columnas para mobile: 1 columna, luego 2, luego 3 */}
-                        <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
-                            {selectedAlbum.images.map((img, idx) => (
-                                <button key={img.src || idx} type="button" className="w-full break-inside-avoid cursor-pointer rounded-lg shadow-md hover:opacity-90 transition relative group border-2 border-transparent hover:border-dorado focus:border-dorado focus:outline-none" onClick={() => setLightboxIndex(idx)} aria-label={`Ver foto ${idx + 1}`}>
-                                    <img src={img.src} alt={img.caption || ""} className="w-full h-auto rounded-lg" loading="lazy" />
-                                    <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition"></div>
-                                </button>
-                            ))}
-                        </div>
+                <div className="fade-in">
+                    <SectionHeader title="IMAGINA" subtitle="Galería Multimedia" />
+                    
+                    {/* BOTONES DE FILTRO */}
+                    <div className="flex flex-wrap justify-center gap-4 mb-12">
+                        {categories.map(cat => (
+                            <button 
+                                key={cat}
+                                onClick={() => setFilter(cat)}
+                                className={`px-6 py-2 rounded-full font-cinzel text-sm transition-all duration-300 ${
+                                    filter === cat 
+                                    ? 'bg-sigillata text-white shadow-lg scale-105' 
+                                    : 'bg-white text-pizarra border border-gray-300 hover:border-dorado hover:text-dorado'
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
                     </div>
 
                     {/* LIGHTBOX / VISOR DE IMÁGENES */}
@@ -869,30 +1045,20 @@
             
             // LÓGICA DE CABECERA DINÁMICA (SCROLL)
             useEffect(() => {
-                const handleScroll = () => {
-                    // Solo activar la lógica de ocultamiento si el menú móvil está cerrado
-                    if (!mobileMenuOpen) {
-                        if (window.scrollY > lastScrollY.current && window.scrollY > 100) {
-                            // Scrolling hacia abajo (ocultar)
-                            setHeaderVisible(false);
-                        } else {
-                            // Scrolling hacia arriba (mostrar)
-                            setHeaderVisible(true);
-                        }
-                        lastScrollY.current = window.scrollY;
-                    }
-                };
-                
-                // Si el menú móvil está abierto, la cabecera debe permanecer visible
-                if (mobileMenuOpen) {
-                    setHeaderVisible(true);
-                    window.removeEventListener('scroll', handleScroll);
-                } else {
-                    window.addEventListener('scroll', handleScroll);
-                }
-                
-                return () => window.removeEventListener('scroll', handleScroll);
-            }, [mobileMenuOpen]); // Depende del estado del menú móvil
+                window.scrollTo(0, 0);
+                setMobileMenuOpen(false);
+            }, [page]);
+
+            const NavLink = ({ target, label, isMobile = false }) => {
+                // Mantener activo si la página actual es la principal o su subpágina de detalle
+                const isActive = page === target || 
+                                 (target === 'tabularium' && page === 'article') ||
+                                 (target === 'fasti' && page === 'eventDetail'); 
+                const baseClass = "cursor-pointer transition duration-300 font-cinzel font-semibold";
+                const desktopClass = isActive 
+                    ? "text-sigillata border-b-2 border-sigillata pb-1" 
+                    : "text-pizarra hover:text-sigillata pb-1";
+                const mobileClass = `block px-4 py-3 text-white ${isActive ? 'bg-black/20' : 'hover:bg-white/10'}`;
 
             // Lógica de ruteo por Hash
             useEffect(() => {
@@ -943,12 +1109,37 @@
                 <div className="flex flex-col min-h-screen">
                     <header className={headerClass}>
                         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-                            <a href="#home" className="flex items-center group focus:ring-2 focus:ring-pompeyano rounded p-1" aria-label="Ir a inicio"><img src={data.general.logoUrl} alt="Ibidem Logo" className="h-10 md:h-12 w-auto group-hover:scale-105 transition" /></a>
-                            <nav className="hidden md:flex space-x-8" aria-label="Menú principal"><NavItem to="home" label="DOMUS" /><NavItem to="nostri" label="NOSTRI" /><NavItem to="fasti" label="FASTI" /><NavItem to="imagina" label="IMAGINA" /><NavItem to="tabularium" label="TABULARIUM" /></nav>
-                            <button className="md:hidden text-pompeyano p-2 hover:bg-pompeyano/10 rounded transition focus:ring-2 focus:ring-pompeyano" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}><Icon path={mobileMenuOpen ? Icons.X : Icons.Menu} size={28} /></button>
+                            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setPage('home')}>
+                                <img src={DATA.general.logoUrl} alt="Ibidem Logo" className="h-12 w-auto" onError={(e) => {e.target.onerror = null; e.target.src='https://placehold.co/120x48/F5EFE3/9A2A2A?text=IBIDEM'}} />
+                            </div>
+                            
+                            {/* Menu Desktop - REORDENADO */}
+                            <nav className="hidden md:flex space-x-8">
+                                <NavLink target="home" label="DOMUS" />
+                                <NavLink target="nostri" label="NOSTRI" />
+                                <NavLink target="fasti" label="FASTI" />
+                                <NavLink target="imagina" label="IMAGINA" />
+                                <NavLink target="tabularium" label="TABULARIUM" />
+                                <NavLink target="rostra" label="ROSTRA" />
+                            </nav>
+
+                            {/* Botón Móvil */}
+                            <button className="md:hidden text-sigillata" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                                <Icons.Menu size={28} />
+                            </button>
                         </div>
-                        {/* El menú móvil ahora tiene un fondo sólido de color pompeyo */}
-                        {mobileMenuOpen && (<nav className="md:hidden bg-pompeyano shadow-inner fade-in border-t border-white/20 mobile-menu-open" aria-label="Menú móvil"><MobileNavItem to="home" label="DOMUS" /><MobileNavItem to="nostri" label="NOSTRI" /><MobileNavItem to="fasti" label="FASTI" /><MobileNavItem to="imagina" label="IMAGINA" /><MobileNavItem to="tabularium" label="TABULARIUM" /></nav>)}
+
+                        {/* Menu Móvil - REORDENADO */}
+                        {mobileMenuOpen && (
+                            <div className="md:hidden bg-sigillata fade-in">
+                                <NavLink target="home" label="DOMUS" isMobile={true} />
+                                <NavLink target="nostri" label="NOSTRI" isMobile={true} />
+                                <NavLink target="fasti" label="FASTI" isMobile={true} />
+                                <NavLink target="imagina" label="IMAGINA" isMobile={true} />
+                                <NavLink target="tabularium" label="TABULARIUM" isMobile={true} />
+                                <NavLink target="rostra" label="ROSTRA" isMobile={true} />
+                            </div>
+                        )}
                     </header>
                     {/* Añadido un padding lateral más pequeño en móvil para la sección principal: px-2 md:px-4 */}
                     <main id="main-content" ref={mainRef} tabIndex="-1" className="flex-grow container mx-auto px-2 md:px-4 py-8 md:py-12 bg-transparent relative z-10 focus:outline-none">{Content}</main>
@@ -977,4 +1168,5 @@
 
     </script>
 </body>
+
 </html>
