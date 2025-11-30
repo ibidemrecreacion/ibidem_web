@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
@@ -6,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- 1. IDENTIDAD Y SEO -->
+    <!-- Se elimina 'Vivere Romanum' del título -->
     <title>Ibidem: Recreación Histórica</title>
     <meta name="description" content="Asociación de recreación histórica dedicada a la reconstrucción minuciosa de la vida civil romana, indumentaria y ritos en Andalucía.">
     
@@ -48,8 +48,26 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Loader */
-        #loader { position: fixed; inset: 0; background: var(--color-pergamino); display: flex; justify-content: center; align-items: center; z-index: 9999; flex-direction: column; transition: opacity 0.5s; }
-        .spinner { width: 50px; height: 50px; border: 5px solid var(--color-dorado); border-top: 5px solid var(--color-pompeyano); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        #loader { 
+            position: fixed; 
+            inset: 0; 
+            background: var(--color-pergamino); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 9999; 
+            flex-direction: column; 
+            transition: opacity 0.5s; 
+        }
+        .spinner { 
+            width: 50px; 
+            height: 50px; 
+            border: 5px solid var(--color-dorado); 
+            border-top: 5px solid var(--color-pompeyano); 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+            margin-bottom: 20px; 
+        }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* HEADER & NAVIGATION */
@@ -94,7 +112,9 @@
     </script>
 </head>
 <body>
+    <!-- LOADER: Se añade el logo usando la URL estática proporcionada por el usuario -->
     <div id="loader">
+        <img src="https://raw.githubusercontent.com/ibidemrecreacion/ibidem/main/assets/img/General/Logos/svg/Ibidem_logo_nuevo_rojo.svg" alt="Ibidem Logo" class="h-24 w-auto mb-6 opacity-80" />
         <div class="spinner"></div>
         <p style="font-family: 'Cinzel', serif; color: var(--color-dorado-safe);">CARGANDO HISTORIA...</p>
     </div>
@@ -120,15 +140,20 @@
             } catch (e) { return new Date(0); }
         };
 
-        // --- ICONOS SVG ---
+        // --- ICONOS SVG (Se añaden Facebook e Instagram) ---
         const Icon = ({ path, size = 24, className = "" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d={path} /></svg>
         );
         const Icons = {
-            Menu: "M4 12h16M4 6h16M4 18h16", X: "M18 6L6 18M6 6l12 12", Mail: "M4 4h16c2 0 2 2 2 2v12c0 2-2 2-2 2H4c-2 0-2-2-2-2V6c0-2 2-2 2-2zM22 6l-10 7L2 6",
-            ArrowLeft: "M19 12H5 M12 19l-7-7 7-7", ChevronRight: "M9 18l6-6-6-6", ChevronLeft: "M15 18l-6-6 6-6", Camera: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8",
+            Menu: "M4 12h16M4 6h16M4 18h16", X: "M18 6L6 18M6 6l12 12", 
+            Mail: "M4 4h16c2 0 2 2 2 2v12c0 2-2 2-2 2H4c-2 0-2-2-2-2V6c0-2 2-2 2-2zM22 6l-10 7L2 6",
+            ArrowLeft: "M19 12H5 M12 19l-7-7 7-7", ChevronRight: "M9 18l6-6-6-6", ChevronLeft: "M15 18l-6-6 6-6", 
+            Camera: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8",
             MapPin: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z M12 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6",
-            Calendar: "M19 4h-1V3a1 1 0 0 0-2 0v1H8V3a1 1 0 0 0-2 0v1H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14v11z"
+            Calendar: "M19 4h-1V3a1 1 0 0 0-2 0v1H8V3a1 1 0 0 0-2 0v1H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14v11z",
+            // Iconos Sociales (Lucide placeholders)
+            Facebook: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z",
+            Instagram: "M15 2h-6a7 7 0 0 0-7 7v6a7 7 0 0 0 7 7h6a7 7 0 0 0 7-7V9a7 7 0 0 0-7-7z M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M17.5 6.5h.01",
         };
 
         // --- COMPONENTES UI MEJORADOS ---
@@ -144,7 +169,44 @@
             </div>
         );
 
-        // --- PÁGINAS ---
+        // MODAL PARA AVISO LEGAL Y ACCESIBILIDAD
+        const LegalModal = ({ type, onClose }) => {
+            const title = type === 'legal' ? 'Aviso Legal' : 'Accesibilidad';
+            const content = type === 'legal' ? (
+                <>
+                    <p className="mb-4 font-bold">Titularidad del sitio web: Ibidem Recreación Histórica.</p>
+                    <p className="mb-4">Contacto: ibidemrecreacion@gmail.com.</p>
+                    <p className="mb-4">Finalidad: La presente página tiene por objeto la divulgación y promoción de actividades de recreación histórica.</p>
+                    <p className="text-sm italic text-gray-500 mt-6">Esta es una sección de aviso legal simplificada y de relleno. Para el uso real del sitio, debe completarse con la información legal oficial de la asociación.</p>
+                </>
+            ) : (
+                <>
+                    <p className="mb-4">Estamos comprometidos a hacer nuestro contenido accesible a todas las personas. Hemos implementado las siguientes medidas:</p>
+                    <ul className="list-disc list-inside ml-4 text-gray-700 space-y-2">
+                        <li>Uso de marcado HTML semántico y bien estructurado.</li>
+                        <li>Contraste de color suficiente para garantizar la legibilidad (Web Content Accessibility Guidelines WCAG 2.1).</li>
+                        <li>Compatibilidad con navegación por teclado y lectores de pantalla.</li>
+                        <li>Etiquetas ALT descriptivas para imágenes clave y contenido.</li>
+                    </ul>
+                    <p className="mt-6 text-sm italic text-gray-500">Si encuentra alguna barrera de accesibilidad, le agradecemos que nos contacte en ibidemrecreacion@gmail.com.</p>
+                </>
+            );
+
+            return (
+                <div className="fixed inset-0 bg-pizarra/70 z-50 flex items-center justify-center p-4" onClick={onClose}>
+                    <div className="bg-white rounded-lg shadow-2xl p-6 md:p-10 max-w-lg w-full transform transition-all duration-300 scale-100 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                        <div className="flex justify-between items-center border-b pb-3 mb-4">
+                            <h3 className="font-cinzel text-2xl font-bold text-pompeyano">{title}</h3>
+                            <button onClick={onClose} className="text-gray-400 hover:text-pizarra p-2 rounded-full hover:bg-gray-100 transition"><Icon path={Icons.X} size={24}/></button>
+                        </div>
+                        <div className="text-reading text-gray-800">{content}</div>
+                    </div>
+                </div>
+            );
+        };
+
+
+        // --- PÁGINAS (Sin cambios sustanciales, se mantienen las funcionalidades) ---
 
         const PageHome = ({ data }) => (
             <div className="fade-in">
@@ -193,7 +255,6 @@
             </div>
         );
 
-        // --- FASTI MEJORADO (Línea de tiempo vertical con toda la info) ---
         const PageFasti = ({ data }) => {
             const enrichedEvents = useMemo(() => {
                 const all = [...(data.fasti.upcoming || []), ...(data.fasti.past || [])];
@@ -228,7 +289,7 @@
                 <a href={`#imagina?id=${event.id}`} className={`block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group h-full flex flex-col ${isFuture ? 'border-t-4 border-pompeyano transform hover:-translate-y-1' : 'border-l-4 border-dorado'}`}>
                     <div className="h-48 overflow-hidden relative bg-gray-100">
                         {event.displayImage ? (
-                            <img src={event.displayImage} alt={event.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+                            <img src={event.displayImage} alt={event.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/600x400/9A2A2A/B8860B?text=IMAGEN+NO+DISPONIBLE"; }}/>
                         ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400"><Icon path={Icons.Camera} size={32}/></div>
                         )}
@@ -329,7 +390,7 @@
                     <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto px-4">
                         {filtered.map(art => (
                             <article key={art.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col group">
-                                <div className="h-48 overflow-hidden"><img src={art.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt={art.title}/></div>
+                                <div className="h-48 overflow-hidden"><img src={art.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt={art.title} onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/600x400/2A2A2A/F5EFE3?text=ART%C3%8DCULO+SIN+IMAGEN"; }}/></div>
                                 <div className="p-6 flex-col flex flex-grow">
                                     <span className="text-xs font-cinzel text-dorado-safe uppercase tracking-widest mb-2">{art.category}</span>
                                     <h3 className="font-cinzel text-xl font-bold text-pizarra mb-3 leading-tight group-hover:text-pompeyano transition-colors">{art.title}</h3>
@@ -350,20 +411,20 @@
 
             return (
                 <article className="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-xl shadow-2xl my-8 fade-in relative px-6">
-                    <a href="#tabularium" className="absolute top-8 left-8 text-gray-400 hover:text-pompeyano transition"><Icon path={Icons.ArrowLeft} /></a>
+                    <a href="#tabularium" className="absolute top-8 left-8 text-gray-400 hover:text-pompeyano transition flex items-center text-sm font-bold"><Icon path={Icons.ArrowLeft} className="mr-1"/> Volver</a>
                     <header className="text-center mb-10 mt-6">
                         <span className="text-xs font-cinzel text-dorado-safe uppercase tracking-widest block mb-2">{art.category}</span>
                         <h1 className="font-cinzel text-3xl md:text-4xl font-bold text-pizarra mb-4">{art.title}</h1>
                         <p className="text-gray-500 italic text-sm">Por {art.author} | {art.date}</p>
                     </header>
-                    <img src={art.img} className="w-full rounded-lg mb-10 shadow-md" alt={art.title}/>
+                    <img src={art.img} className="w-full rounded-lg mb-10 shadow-md" alt={art.title} onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/700x400/2A2A2A/F5EFE3?text=ART%C3%8DCULO+SIN+IMAGEN+PRINCIPAL"; }}/>
                     <div className="prose max-w-none text-gray-800">
                         <p className="text-lg italic border-l-4 border-pompeyano pl-4 mb-8 bg-gray-50 p-4 rounded-r">{art.intro}</p>
                         {art.sections.map((s,i) => (
                             <div key={i} className="mb-8">
                                 <h2 className="font-cinzel text-xl font-bold text-pompeyano mb-3 border-b border-gray-200 pb-1">{s.title}</h2>
                                 <p className="text-reading text-gray-700 leading-relaxed mb-4">{s.content}</p>
-                                {s.image && <img src={s.image} className="w-full rounded shadow-sm my-4" alt=""/>}
+                                {s.image && <img src={s.image} className="w-full rounded shadow-sm my-4" alt="" onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/600x300/F5EFE3/2A2A2A?text=IMAGEN+SECCI%C3%93N+NO+CARGADA"; }}/>}
                             </div>
                         ))}
                     </div>
@@ -396,12 +457,12 @@
             if (selected) {
                 return (
                     <div className="fade-in px-4">
-                        <button onClick={() => window.location.hash = 'imagina'} className="flex items-center text-pompeyano font-bold mb-6 hover:text-dorado-safe"><Icon path={Icons.ArrowLeft} className="mr-2"/> Volver</button>
+                        <button onClick={() => window.location.hash = 'imagina'} className="flex items-center text-pompeyano font-bold mb-6 hover:text-dorado-safe"><Icon path={Icons.ArrowLeft} className="mr-2"/> Volver a Galerías</button>
                         <SectionHeader title={selected.eventTitle} subtitle={selected.date} />
                         <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
                             {selected.images.map((img, i) => (
                                 <div key={i} className="break-inside-avoid rounded-lg overflow-hidden shadow hover:shadow-lg transition">
-                                    <img src={img.src} alt="" className="w-full h-auto" loading="lazy"/>
+                                    <img src={img.src} alt="" className="w-full h-auto" loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/400x300/F5EFE3/9A2A2A?text=ERROR+AL+CARGAR"; }}/>
                                     {img.caption && <div className="p-2 bg-white text-xs text-center italic text-gray-600 border-t border-gray-100">{img.caption}</div>}
                                 </div>
                             ))}
@@ -417,7 +478,7 @@
                         {albums.map(alb => (
                             <a key={alb.id} href={`#imagina?id=${alb.id}`} className="block group bg-white rounded-lg overflow-hidden shadow hover:shadow-xl transition-all hover:-translate-y-1">
                                 <div className="h-48 overflow-hidden relative">
-                                    <img src={alb.coverImage} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt=""/>
+                                    <img src={alb.coverImage} className="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt={`Portada de ${alb.eventTitle}`} onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/600x400/9A2A2A/B8860B?text=EVENTO+SIN+IMAGEN"; }}/>
                                     <div className="absolute inset-0 bg-pompeyano/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white font-cinzel font-bold tracking-widest">VER FOTOS</div>
                                 </div>
                                 <div className="p-4 text-center">
@@ -437,10 +498,13 @@
             const [page, setPage] = useState('home');
             const [params, setParams] = useState({});
             const [mobileMenu, setMobileMenu] = useState(false);
+            const [legalModal, setLegalModal] = useState(null); // 'legal' or 'accesibilidad'
 
             useEffect(() => {
+                // Se usa la ruta relativa del archivo de datos
                 fetch('./datos.json').then(r => r.json()).then(d => {
                     setData(d);
+                    // Ocultar loader después de cargar los datos
                     document.getElementById('loader').style.opacity = '0';
                     setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
                 });
@@ -483,7 +547,8 @@
                 <div className="flex flex-col min-h-screen">
                     <header className="main-header sticky top-0 z-40 border-b border-dorado/20">
                         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-                            <a href="#home"><img src={data.general.logoUrl} alt="Logo" className="h-12 w-auto hover:scale-105 transition"/></a>
+                            {/* LOGO: Se aumenta el tamaño a md:h-16 */}
+                            <a href="#home"><img src={data.general.logoUrl} alt="Logo" className="h-12 md:h-16 w-auto hover:scale-105 transition"/></a>
                             <nav className="hidden md:flex space-x-8">
                                 {['home','nostri','fasti','imagina','tabularium'].map(l => <NavLink key={l} to={l} label={l.toUpperCase()}/>)}
                             </nav>
@@ -502,16 +567,38 @@
                         {page === 'article' && <PageArticle data={data} id={params.id} />}
                     </main>
 
+                    {/* FOOTER: Se reemplazan los enlaces de texto por iconos y se añaden los enlaces legales */}
                     <footer className="bg-pizarra text-pergamino py-8 border-t-4 border-dorado relative z-20">
                         <div className="container mx-auto px-4 text-center">
+                            {/* ICONOS SOCIALES */}
                             <div className="flex justify-center gap-8 mb-6">
-                                <a href={data.general.facebook} className="hover:text-dorado transition transform hover:scale-110">Facebook</a>
-                                <a href={data.general.instagram} className="hover:text-dorado transition transform hover:scale-110">Instagram</a>
-                                <a href={`mailto:${data.general.email}`} className="hover:text-dorado transition transform hover:scale-110">Email</a>
+                                <a href={data.general.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-pergamino hover:text-dorado transition transform hover:scale-110 group">
+                                    <Icon path={Icons.Facebook} size={30} className="w-8 h-8"/>
+                                </a>
+                                <a href={data.general.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-pergamino hover:text-dorado transition transform hover:scale-110 group">
+                                    <Icon path={Icons.Instagram} size={30} className="w-8 h-8"/>
+                                </a>
+                                <a href={`mailto:${data.general.email}`} aria-label="Email de Contacto" className="text-pergamino hover:text-dorado transition transform hover:scale-110 group">
+                                    <Icon path={Icons.Mail} size={30} className="w-8 h-8"/>
+                                </a>
                             </div>
-                            <p className="font-cinzel text-xs text-gray-500 tracking-widest">&copy; {new Date().getFullYear()} IBIDEM. VIVERE ROMANUM.</p>
+
+                            {/* ENLACES LEGALES */}
+                            <div className="flex justify-center items-center gap-4 text-xs uppercase tracking-widest font-cinzel text-gray-500 mb-2">
+                                <button onClick={() => setLegalModal('legal')} className="hover:text-dorado-safe transition focus:ring-2 focus:ring-dorado-safe rounded px-1">Aviso Legal</button>
+                                <span className="text-gray-700">|</span>
+                                <button onClick={() => setLegalModal('accesibilidad')} className="hover:text-dorado-safe transition focus:ring-2 focus:ring-dorado-safe rounded px-1">Accesibilidad</button>
+                            </div>
+                            
+                            {/* COPYRIGHT: Se elimina 'Vivere Romanum' */}
+                            <p className="font-cinzel text-xs text-gray-500 tracking-widest mt-4">
+                                &copy; {new Date().getFullYear()} IBIDEM.
+                            </p>
                         </div>
                     </footer>
+
+                    {/* RENDER MODAL LEGAL */}
+                    {legalModal && <LegalModal type={legalModal} onClose={() => setLegalModal(null)} />}
                 </div>
             );
         };
@@ -521,5 +608,4 @@
     </script>
 </body>
 </html>
-
 
