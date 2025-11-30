@@ -298,14 +298,7 @@
                 const allRaw = [...(data.fasti.upcoming || []), ...(data.fasti.past || [])];
                 
                 return allRaw.map(evt => {
-                    // Buscar si este evento tiene un álbum correspondiente en imagina
                     const album = data.imagina ? data.imagina.find(a => a.id === evt.id) : null;
-                    
-                    // Prioridad de Imagen: 
-                    // 1. Imagen definida en el evento (Fasti)
-                    // 2. Imagen de portada del álbum (Imagina)
-                    // 3. Primera imagen del álbum (Imagina)
-                    // 4. null
                     let finalImage = evt.coverImage;
                     
                     if (!finalImage && album) {
@@ -434,18 +427,26 @@
                             <div className="flex gap-12 px-4 min-w-max">
                                 {years.map(year => (
                                     <div key={year} className="flex gap-8 relative">
+                                        {/* AÑO Y LÍNEA SEPARADORA */}
                                         <div className="flex flex-col items-center justify-start pt-28 mr-4 relative z-10">
-                                            <div className="text-4xl md:text-5xl font-cinzel font-bold text-gray-200 absolute top-0 -mt-8 left-1/2 -translate-x-1/2 select-none pointer-events-none">{year}</div>
+                                            {/* Eliminado: Número de año gigante */}
+                                            {/* <div className="text-4xl md:text-5xl font-cinzel font-bold text-gray-200 absolute top-0 -mt-8 left-1/2 -translate-x-1/2 select-none pointer-events-none">{year}</div> */}
+                                            
+                                            {/* Punto de unión en línea (Opcional, lo dejo para marcar el grupo) */}
                                             <div className="w-4 h-4 rounded-full bg-pizarra border-4 border-pergamino shadow-sm z-20"></div>
+                                            
+                                            {/* Línea vertical separadora de grupo */}
                                             <div className="h-full w-px border-l-2 border-dashed border-gray-300 absolute top-[9rem] bottom-0"></div>
                                         </div>
+
                                         {groupedPastEvents[year].map((event) => (
                                             <div key={event.id} className="relative z-10 w-72 md:w-80 group flex flex-col items-center">
-                                                <div className="mb-8 transform transition-transform group-hover:-translate-y-1">
-                                                    <span className="inline-block bg-pizarra text-pergamino px-3 py-1 rounded text-xs font-cinzel font-bold tracking-widest shadow-lg border border-dorado">{event.date}</span>
-                                                    <div className="h-4 w-px bg-pizarra/50 mx-auto mt-1"></div>
-                                                </div>
-                                                <div className="absolute top-[9rem] -mt-3 w-6 h-6 rounded-full border-4 border-pergamino bg-pompeyano shadow-md z-20 group-hover:scale-125 transition-transform duration-300"></div>
+                                                
+                                                {/* Eliminado: Bloque de fecha sobre la tarjeta */}
+                                                
+                                                {/* Eliminado: Punto rojo sobre la tarjeta */}
+                                                
+                                                {/* Tarjeta del evento */}
                                                 <div className="mt-8 h-full w-full">
                                                     <EventCard event={event} isFuture={false} />
                                                 </div>
