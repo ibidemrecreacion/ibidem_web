@@ -230,6 +230,16 @@
            { "src": "https://raw.githubusercontent.com/ibidemrecreacion/ibidem/main/assets/img/Funus_Monturque/Funus027.jpg", "caption": "Crematio" },
            { "src": "https://raw.githubusercontent.com/ibidemrecreacion/ibidem/main/assets/img/Funus_Monturque/Funus028.jpg", "caption": "Framiliar en el momento final de la crematio" }
        ]
+    },
+    {
+        "id": 12,
+        "eventTitle": "Pvgno, ergo svm",
+        "date": "25 de octubre, 2025",
+        "location": { "locality": "Herrera (Sevilla)", "place": "Termas Romanas" },
+        "coverImage": "https://raw.githubusercontent.com/ibidemrecreacion/ibidemrecreacion.github.io/main/assets/img/Pugno/PVGNOcartel.jpg",
+        "images": [
+            { "src": "https://raw.githubusercontent.com/ibidemrecreacion/ibidemrecreacion.github.io/main/assets/img/Pugno/PVGNOcartel.jpg", "caption": "Cartel promocional del evento Pvgno, ergo svm" }
+        ]
     }
   ]
 }
