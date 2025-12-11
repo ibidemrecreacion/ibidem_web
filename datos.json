@@ -26,7 +26,7 @@
   },
   "tabularium": [
    {
-      "id": 5,
+      "id": 4,
       "category": "Religión",
       "title": "¿Cuándo nació la Navidad?",
       "date": "22 de Diciembre, 2025",
@@ -34,11 +34,11 @@
       "antetitle": "CRISTIANISMO PRIMITIVO",
       "summary": "Cada año, al encender las luces y adornar nuestros hogares en diciembre, se repite la misma historia: la Navidad no es más que una fiesta pagana reciclada, una simple copia de las celebraciones romanas del solsticio. Esta narrativa, aunque popular, simplifica en exceso un fascinante proceso histórico y teológico que duró siglos. La realidad, como a menudo sucede en la Antigüedad tardía, es mucho más compleja, entrecruzando creencias cristianas, tradiciones judías, cálculos astronómicos y, por supuesto, la política imperial.",
       "img": "https://placehold.co/1000x400/8B4513/F5EFE3?text=LARARIO+ROMANO",
-      "intro": "Si los primeros cristianos, que estaban más enfocados en la resurrección de Jesús que en su nacimiento, evitaban celebrar cumpleaños (una práctica que figuras como Orígenes consideraban "pagana" o digna solo de pecadores como Herodes y el Faraón), surge la pregunta crucial para la historia: **¿Por qué, y cómo, se estableció el 25 de diciembre como la fecha de la Natividad?**.",
+      "intro": "Si los primeros cristianos, que estaban más enfocados en la resurrección de Jesús que en su nacimiento, evitaban celebrar cumpleaños (una práctica que figuras como Orígenes consideraban «pagana» o digna solo de pecadores como Herodes y el Faraón), surge la pregunta crucial para la historia: **¿Por qué, y cómo, se estableció el 25 de diciembre como la fecha de la Natividad?**.",
       "sections": [
         {
           "title": "Dos teorías enfrentadas",
-              "content": "La historiografía moderna ha cristalizado el origen del 25 de diciembre en torno a dos grandes hipótesis que se confrontan desde el siglo XIX: la teoría de la **Historia de las religiones** y la **Teoría del cálculo**."
+              "content": "La historiografía moderna ha cristalizado el origen del 25 de diciembre en torno a dos grandes hipótesis que se confrontan desde el siglo XIX: la teoría de la **Historia de las religiones** y la **Teoría del cálculo**.",
           "subsections": [
             {
               "subtitle": "La sombra del «Sol invictus»: La teoría de la sustitución",
